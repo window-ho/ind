@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="author" content="windowho@korea.kr">
+    <meta name="copyright" content="Copyright © windowho@korea.kr All Rights Reserved.">
+    <title>업무노트(농가경제)</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #cccccc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 4vw;
+        }
+
+        @media (min-width: 480px) {
+            html, body {
+                font-size: 16px;
+            }
+        }
+
+        input, select, textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+            font-size: 0.95rem;
+        }
+
+        body {
+            padding: 10px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            width: 100%;
+        }
+
+        header h1 { font-size: 1.3rem; }
+
+        .menu-btn {
+            position: absolute;
+            top: 12px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 55px;
+            right: 10px;
+            background: white;
+            color: #333;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 2000;
+            width: 200px;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .dropdown-menu button {
+            width: 100%;
+            padding: 12px 15px;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-menu button img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .dropdown-menu button:hover {
+            background-color: #f1f8e9;
+            color: var(--primary);
+        }
+
+        .dropdown-menu .menu-danger {
+            color: #d32f2f;
+            border-top: 2px solid #ffcdd2;
+        }
+
+        .farm-selector-box {
+            background: #e8f5e9;
+            border: 2px solid var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .farm-selector-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .farm-selector-row label {
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            white-space: nowrap;
+        }
+
+        .farm-selector-row select {
+            padding: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .farm-info-summary {
+            background: #ffffff;
+            border: 1px solid #c8e6c9;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #2e7d32;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+
+        .btn-edit-farm { background-color: #ff9800; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+        .btn-add-farm { background-color: #2196f3; color: white; padding: 6px 10px; border: none; border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+
+        .main-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 75px;
+            padding: 10px 4px;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .tab-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .tab-btn.active { background-color: var(--primary); color: white; }
+
+        .card {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .form-group { margin-bottom: 10px; }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .radio-btn-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .radio-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            background: white;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .radio-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-save { background-color: var(--primary-light); color: white; }
+        .btn-print { background-color: #0288d1; color: white; }
+        .btn-backup { background-color: #7b1fa2; color: white; }
+        .btn-sync { background-color: #3f51b5; color: white; }
+        .btn-danger { background-color: #d32f2f; color: white; }
+        .btn-canvas { background-color: #ff5722; color: white; }
+
+        .summary-box {
+            background: #f1f8e9;
+            border-left: 4px solid var(--primary);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 6px;
+            font-weight: bold;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            min-width: 450px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 4px;
+            text-align: center;
+            word-break: break-all;
+        }
+
+        th { background-color: #f2f2f2; }
+        .clickable-row { cursor: pointer; transition: background-color 0.2s; }
+        .clickable-row:hover { background-color: #e8f5e9; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #drawingCanvas {
+            border: 2px dashed var(--primary);
+            background: #ffffff;
+            width: 100%;
+            height: 220px;
+            touch-action: none;
+            cursor: crosshair;
+            border-radius: 4px;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
+    <div class="no-print">
+        <header>
+            <h1>업무노트(농가경제)</h1>
+            <button class="menu-btn" onclick="toggleMenu()">☰ 메뉴</button>
+            <div class="dropdown-menu" id="topDropdownMenu">
+                <button onclick="switchTab('crop'); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABFUlEQVR4nO2bOxbCMAwEDeejgJNCwf2gcuP4Ezl+byJlpyTE2R3LXZKSEOLK3FYs8ng/fyvWmeH7+hzqMH0zWbrFjAzzDWcsXmIRcbcs7KF8Sracu0x5KV5jNA3DCfBcPqVxftMRiEhXgPfdz/R6NAVEKZ9p9dERqP0YbfcztV6aADoAzUZA1PHPlP00AXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AI0E0AFoJIAOQCMBdAAaCaAD0EgAHYBGAugANBJAB6CRADoAjQTQAWg2Ao6+e3t2yn6aADoATVVA1GNQ66UJaF2INgWtPt0JiCKh10NHYPQH71Mwym8q5+kdwr0bZzoCXqbBklNfja14sOfvBoW4OH9SaExstcJtPAAAAABJRU5ErkJggg==" alt="작물"> 작물/파종</button>
+                <button onclick="switchTab('cropInc'); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGElEQVR4nO2buxXCMBAEBTlF0B4F0R5FUABESmR9fLLeG995J8RY3h2dMjslIcSVua1Y5Pn+/lasM8Pn9TjUYfpmsnSLGRnmG85YvMQi4m5Z2EP5lGw5d5nyUrzGaBqGE+C5fErj/KYjEJGuAO+7n+n1aAqIUj7T6qMjUPsx2u5nar00AXQAmo2AqOOfKftpAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BsBBx99/bslP00AXQAmqqAqMeg1ksT0LoQbQpafboTEEVCr4eOwOgP3qdglN9UztM7hHs3znQEvEyDJae+GlvxYM/fDQpxcf4vTExs8QPKQQAAAABJRU5ErkJggg==" alt="수입"> 농작물수입</button>
+                <button onclick="switchTab('etcInc'); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABEElEQVR4nO2bOxaDMAwERU6bI+W2pHJj/EGG9waJnTIEszuWOzATQryZ7Y5F9p/td6yzwva91mH5ZrJ0jxUZ7hueWLzGI+LjWThCeTNfzlOmohRvMZuG6QRELm82z+86AhkZCoi++4VRj66ALOULvT46Aq0fs+1+odVLE0AHoDkIyDr+hbqfJoAOQCMBdAAaCaAD0EgAHYBGAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgDNQcDVd2+fTt1PE0AHoGkKyHoMWr00Ab0L2aag12c4AVkkjHroCMz+EH0KZvld5SK9Q3h241xHIMo0eHLqq7E7Hhz5u0EhXs4f6zE5bPQyxYcAAAAASUVORK5CYII=" alt="수입표"> 수입표</button>
+                <button onclick="switchTab('expense'); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGElEQVR4nO2buxXCMBAEBU2Q0Rx10RwZVUCkRNbHJ+u98Z13Qozl3dEps1MSQlyZ24pFvs/Xb8U6Mzw+70Mdpm8mS7eYkWG+4YzFSywi7paFPZRPyZZzlykvxWuMpmE4AZ7LpzTObzoCEekK8L77mV6PpoAo5TOtPjoCtR+j7X6m1ksTQAeg2QiIOv6Zsp8mgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AM1GwNF3b89O2U8TQAegqQqIegxqvTQBrQvRpqDVpzsBUST0eugIjP7gfQpG+U3lPL1DuHfjTEfAyzRYcuqrsRUP9vzdoBAX5w+f20xsKfVlNQAAAABJRU5ErkJggg==" alt="지출"> 지출표</button>
+                <button onclick="switchTab('work'); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGUlEQVR4nO2byxXCMAwEDc3QDkVQFkXQDtXAyRfHn8jxexMpO0dCnN2xfEtSEkJcmduKRd6Pz2/FOjO8vs9DHaZvJku3mJFhvuGMxUssIu6WhT2UT8mWc5cpL8VrjKZhOAGey6c0zm86AhHpCvC++5lej6aAKOUzrT46ArUfo+1+ptZLE0AHoNkIiDr+mbKfJoAOQCMBdAAaCaAD0EgAHYBGAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoDNRsDRd2/PTtlPE0AHoKkKiHoMar00Aa0L0aag1ac7AVEk9HroCIz+4H0KRvlN5Ty9Q7h340xHwMs0WHLqq7EVD/b83aAQF+cPbAlMbDrgM2sAAAAASUVORK5CYII=" alt="작업"> 작업시간</button>
+                <button onclick="switchTab('tax'); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABF0lEQVR4nO2bOxbCMAwEDSflEpRUlFyCm0LlxvEncvzeRMpOSYizO5a7JCUhxJW5rVjk8fr8Vqwzw/f9PNRh+maydIsZGeYbzli8xCLiblnYQ/mUbDl3mfJSvMZoGoYT4Ll8SuP8piMQka4A77uf6fVoCohSPtPqoyNQ+zHa7mdqvTQBdACajYCo458p+2kC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AI0E0AFoJIAOQCMBdAAaCaAD0GwEHH339uyU/TQBdACaqoCox6DWSxPQuhBtClp9uhMQRUKvh47A6A/ep2CU31TO0zuEezfOdAS8TIMlp74aW/Fgz98NCnFx/qtfTGyhIIE0AAAAAElFTkSuQmCC" alt="조세"> 조세</button>
+                <hr style="border:0; border-top:1px solid #ddd;">
+                <button onclick="exportJSON(); toggleMenu();" style="color:#7b1fa2;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGElEQVR4nO2buxXCMBAEBY3QGY0Q0widUQlESmR9fLLeG995J8RY3h2dMjslIcSVua1Y5PX4/FasM8P7+zzUYfpmsnSLGRnmG85YvMQi4m5Z2EP5lGw5d5nyUrzGaBqGE+C5fErj/KYjEJGuAO+7n+n1aAqIUj7T6qMjUPsx2u5nar00AXQAmo2AqOOfKftpAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BsBBx99/bslP00AXQAmqqAqMeg1ksT0LoQbQpafboTEEVCr4eOwOgP3qdglN9UztM7hHs3znQEvEyDJae+GlvxYM/fDQpxcf6oxkxsl/Oa0gAAAABJRU5ErkJggg==" alt="백업"> 백업</button>
+                <button class="menu-danger" onclick="confirmClearFarmData(); toggleMenu();"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABFUlEQVR4nO2bSxKDIBAFSe6T8v7HsHKgZMUG+ThIVTvj62WM+F4z7DQlIcSTea1Y5ptvxXrzPDZ90sdpm8mS7eYkWG+4Y7FSywi3paFPZRPyZbzlCkvxWuMpmE4AZ7LpzTObzoCEekK8L77mV6PpoAo5TOtPjoCtR+j7X6m1ksTQAegOQiIOv6Zsp8mgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AM1BwNV3b+9O2U8TQAegqQqIegxqvTQBrQvRpqDVpzsBUST0eugIjP7gfQpG+U3lPL1DeHbjTEfAyzRYcuqrsRUP9vzdoBAP5w/oHExsyTOc0wAAAABJRU5ErkJggg==" alt="초기화"> 현재농가 초기화</button>
+            </div>
+        </header>
+
+        <!-- 농가 선택 및 정렬 옵션 -->
+        <div class="farm-selector-box">
+            <div class="farm-selector-row">
+                <label for="farmSelect">조사 농가 선택:</label>
+                <select id="farmSelect" style="flex:2; min-width:130px;" onchange="changeFarm()"></select>
+
+                <label for="sortSelect">정렬:</label>
+                <select id="sortSelect" style="flex:1; min-width:90px;" onchange="sortFarms()">
+                    <option value="custom">사용자 지정순</option>
+                    <option value="abc">ㄱㄴㄷ순</option>
+                    <option value="recent">최근 수정순</option>
+                </select>
+
+                <button class="btn-edit-farm" onclick="openFarmModal()">수정</button>
+                <button class="btn-add-farm" onclick="addNewFarm()">+ 새 농가</button>
+            </div>
+            <div class="farm-info-summary" id="farmInfoSummary">
+                농가 정보가 등록되지 않았습니다.
+            </div>
+        </div>
+
+        <!-- 연도/월 필터 -->
+        <div class="farm-selector-box" style="background:#fff3e0; border-color:#ff9800;">
+            <div class="farm-selector-row">
+                <label>조회 기간:</label>
+                <select id="filterYear" onchange="renderTable()" style="flex:1;">
+                    <option value="all">전체 연도</option>
+                </select>
+                <select id="filterMonth" onchange="renderTable()" style="flex:1;">
+                    <option value="all">전체 월</option>
+                    <option value="01">1월</option><option value="02">2월</option><option value="03">3월</option>
+                    <option value="04">4월</option><option value="05">5월</option><option value="06">6월</option>
+                    <option value="07">7월</option><option value="08">8월</option><option value="09">9월</option>
+                    <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 누적 요약 -->
+        <div class="summary-box">
+            <strong>[<span id="currentFarmTitle">농가01</span>] 현황 요약</strong>
+            <div class="summary-grid">
+                <div>농작물 수입: <span id="cropIncomeSum">0</span>원</div>
+                <div>수입표 합계: <span id="etcIncomeSum">0</span>원</div>
+                <div>지출표 합계: <span id="expenseSum">0</span>원</div>
+                <div>총 작업시간: <span id="workTimeSum">0</span>시간</div>
+            </div>
+        </div>
+
+        <!-- 상단 메인 탭 -->
+        <div class="main-tabs">
+            <button class="tab-btn active" id="btn-crop" onclick="switchTab('crop')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABFUlEQVR4nO2bOxbCMAwEDeejgJNCwf2gcuP4Ezl+byJlpyTE2R3LXZKSEOLK3FYs8ng/fyvWmeH7+hzqMH0zWbrFjAzzDWcsXmIRcbcs7KF8Sracu0x5KV5jNA3DCfBcPqVxftMRiEhXgPfdz/R6NAVEKZ9p9dERqP0YbfcztV6aADoAzUZA1PHPlP00AXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AI0E0AFoJIAOQCMBdAAaCaAD0EgAHYBGAugANBJAB6CRADoAjQTQAWg2Ao6+e3t2yn6aADoATVVA1GNQ66UJaF2INgWtPt0JiCKh10NHYPQH71Mwym8q5+kdwr0bZzoCXqbBklNfja14sOfvBoW4OH9SaExstcJtPAAAAABJRU5ErkJggg==" alt="">작물/파종</button>
+            <button class="tab-btn" id="btn-cropInc" onclick="switchTab('cropInc')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGElEQVR4nO2buxXCMBAEBTlF0B4F0R5FUABESmR9fLLeG995J8RY3h2dMjslIcSVua1Y5Pn+/lasM8Pn9TjUYfpmsnSLGRnmG85YvMQi4m5Z2EP5lGw5d5nyUrzGaBqGE+C5fErj/KYjEJGuAO+7n+n1aAqIUj7T6qMjUPsx2u5nar00AXQAmo2AqOOfKftpAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BsBBx99/bslP00AXQAmqqAqMeg1ksT0LoQbQpafboTEEVCr4eOwOgP3qdglN9UztM7hHs3znQEvEyDJae+GlvxYM/fDQpxcf4vTExs8QPKQQAAAABJRU5ErkJggg==" alt="">농작물수입</button>
+            <button class="tab-btn" id="btn-etcInc" onclick="switchTab('etcInc')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABEElEQVR4nO2bOxaDMAwERU6bI+W2pHJj/EGG9waJnTIEszuWOzATQryZ7Y5F9p/td6yzwva91mH5ZrJ0jxUZ7hueWLzGI+LjWThCeTNfzlOmohRvMZuG6QRELm82z+86AhkZCoi++4VRj66ALOULvT46Aq0fs+1+odVLE0AHoDkIyDr+hbqfJoAOQCMBdAAaCaAD0EgAHYBGAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgDNQcDVd2+fTt1PE0AHoGkKyHoMWr00Ab0L2aag12c4AVkkjHroCMz+EH0KZvld5SK9Q3h241xHIMo0eHLqq7E7Hhz5u0EhXs4f6zE5bPQyxYcAAAAASUVORUSLeg==" alt="">수입표</button>
+            <button class="tab-btn" id="btn-expense" onclick="switchTab('expense')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGElEQVR4nO2buxXCMBAEBU2Q0Rx10RwZVUCkRNbHJ+u98Z13Qozl3dEps1MSQlyZ24pFvs/Xb8U6Mzw+70Mdpm8mS7eYkWG+4YzFSywi7paFPZRPyZZzlykvxWuMpmE4AZ7LpzTObzoCEekK8L77mV6PpoAo5TOtPjoCtR+j7X6m1ksTQAeg2QiIOv6Zsp8mgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AM1GwNF3b89O2U8TQAegqQqIegxqvTQBrQvRpqDVpzsBUST0eugIjP7gfQpG+U3lPL1DuHfjTEfAyzRYcuqrsRUP9vzdoBAX5w+f20xsKfVlNQAAAABJRU5ErkJggg==" alt="">지출표</button>
+            <button class="tab-btn" id="btn-work" onclick="switchTab('work')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGUlEQVR4nO2byxXCMAwEDc3QDkVQFkXQDtXAyRfHn8jxexMpO0dCnN2xfEtSEkJcmduKRd6Pz2/FOjO8vs9DHaZvJku3mJFhvuGMxUssIu6WhT2UT8mWc5cpL8VrjKZhOAGey6c0zm86AhHpCvC++5lej6aAKOUzrT46ArUfo+1+ptZLE0AHoNkIiDr+mbKfJoAOQCMBdAAaCaAD0EgAHYBGAugANBJAB6CRADoAjQTQAWgkgA5AIwF0ABoJoAPQSAAdgEYC6AA0EkAHoDNRsDRd2/PTtlPE0AHoKkKiHoMar00Aa0L0aag1ac7AVEk9HroCIz+4H0KRvlN5Ty9Q7h340xHwMs0WHLqq7EVD/b83aAQF+cPbAlMbDrgM2sAAAAASUVORUSLeg==" alt="">작업시간</button>
+            <button class="tab-btn" id="btn-tax" onclick="switchTab('tax')"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABF0lEQVR4nO2bOxbCMAwEDSflEpRUlFyCm0LlxvEncvzeRMpOSYizO5a7JCUhxJW5rVjk8fr8Vqwzw/f9PNRh+maydIsZGeYbzli8xCLiblnYQ/mUbDl3mfJSvMZoGoYT4Ll8SuP8piMQka4A77uf6fVoCohSPtPqoyNQ+zHa7mdqvTQBdACajYCo458p+2kC6AA0EkAHoJEAOgCNBNABaCSADkAjAXQAGgmgA9BIAB2ARgLoADQSQAegkQA6AI0E0AFoJIAOQCMBdAAaCaAD0GwEHH339uyU/TQBdACaqoCox6DWSxPQuhBtClp9uhMQRUKvh47A6A/ep2CU31TO0zuEezfOdAS8TIMlp74aW/Fgz98NCnFx/qtfTGyhIIE0AAAAAElFTkSuQmCC" alt="">조세</button>
+        </div>
+    </div>
+
+    <!-- 1. 작물 수확 및 파종 -->
+    <div id="tab-crop" class="card tab-content active no-print">
+        <h3>작물 수확 및 파종 기록</h3>
+        <div class="form-group"><label>일자</label><input type="date" id="crop-date"></div>
+        <div class="form-group">
+            <label>구분 선택</label>
+            <div class="radio-btn-group">
+                <div class="radio-btn active" id="r-planting" onclick="setCropType('파종/정식')">파종/정식</div>
+                <div class="radio-btn" id="r-harvest" onclick="setCropType('수확')">수확</div>
+            </div>
+            <input type="hidden" id="crop-type" value="파종/정식">
+        </div>
+        <div class="form-group"><label>지번(별칭)</label><input type="text" id="crop-alias" placeholder="예: 101번지, 집 앞 밭"></div>
+        <div class="form-group"><label>작물명</label><input type="text" id="crop-name" placeholder="예: 벼, 마늘, 고구마"></div>
+        <div class="form-group"><label>면적(㎡ 또는 평)</label><input type="text" id="crop-area" placeholder="예: 660㎡ (200평)"></div>
+        <div class="form-group" id="crop-qty-group" style="display:none;"><label>수량/수확량</label><input type="text" id="crop-qty" placeholder="예: 40kg 5포"></div>
+        <div class="btn-group">
+            <button class="btn btn-save" onclick="saveRecord('crop')">작물 기록 저장</button>
+            <button class="btn btn-canvas" onclick="openCanvasModal()">손글씨 메모</button>
+        </div>
+    </div>
+
+    <!-- 2. 농작물 수입 -->
+    <div id="tab-cropInc" class="card tab-content no-print">
+        <h3>농작물 수입 상세 입력</h3>
+        <div class="form-group"><label>일자</label><input type="date" id="cropInc-date"></div>
+        <div class="form-group"><label>품목명</label><input type="text" id="cropInc-item" placeholder="예: 쌀, 양파"></div>
+        <div class="form-group"><label>판매수량</label><input type="text" id="cropInc-qty" placeholder="예: 40kg 10포"></div>
+        <div class="form-group"><label>판매금액(원)</label><input type="number" id="cropInc-amount" placeholder="0"></div>
+        <div class="form-group"><label>판매수수료(원)</label><input type="number" id="cropInc-fee" placeholder="0"></div>
+        <hr style="margin: 12px 0; border:0; border-top:1px dashed #ccc;">
+        <h4 style="font-size:0.9rem; color:var(--primary-dark); margin-bottom:8px;">현물 및 기타 수량 입력</h4>
+        <div class="form-group"><label>현물 거래량(kg)</label><input type="number" id="cropInc-spotKg" placeholder="0"></div>
+        <div class="form-group"><label>현물 거래항목</label><input type="text" id="cropInc-spotItem" placeholder="예: 임차료, 현물 구매 등"></div>
+        <div class="form-group"><label>자가소비량</label><input type="text" id="cropInc-self" placeholder="예: 20kg 2포"></div>
+        <div class="form-group"><label>증여량</label><input type="text" id="cropInc-gift" placeholder="예: 10kg 1포"></div>
+        <div class="form-group"><label>기타량</label><input type="text" id="cropInc-other" placeholder="예: 폐기, 식부 등"></div>
+        <div class="btn-group">
+            <button class="btn btn-save" onclick="saveIncomeRecord()">농작물 수입 저장</button>
+            <button class="btn btn-canvas" onclick="openCanvasModal()">손글씨 메모</button>
+        </div>
+    </div>
+
+    <!-- 3. 수입표 -->
+    <div id="tab-etcInc" class="card tab-content no-print">
+        <h3>수입표 입력 (연금 및 보조금 등)</h3>
+        <div class="form-group"><label>일자</label><input type="date" id="etcInc-date"></div>
+        <div class="form-group">
+            <label>수입 구분</label>
+            <select id="etcInc-category">
+                <option value="기초연금 1번">기초연금 1번</option>
+                <option value="기초연금 2번">기초연금 2번</option>
+                <option value="국민연금 1번">국민연금 1번</option>
+                <option value="국민연금 2번">국민연금 2번</option>
+                <option value="농민연금">농민연금</option>
+                <option value="농업보조금">농업보조금</option>
+                <option value="기타 비농업수입">기타 비농업수입</option>
+            </select>
+        </div>
+        <div class="form-group"><label>내역/출처</label><input type="text" id="etcInc-item" placeholder="예: 기초연금 1번 수령, 지자체 수당"></div>
+        <div class="form-group"><label>금액(원)</label><input type="number" id="etcInc-amount" placeholder="0"></div>
+        <div class="btn-group">
+            <button class="btn btn-save" onclick="saveEtcIncomeRecord()">수입표 저장</button>
+            <button class="btn btn-canvas" onclick="openCanvasModal()">손글씨 메모</button>
+        </div>
+    </div>
+
+    <!-- 4. 지출표 -->
+    <div id="tab-expense" class="card tab-content no-print">
+        <h3>지출표 기록</h3>
+        <div class="form-group"><label>일자</label><input type="date" id="exp-date"></div>
+        <div class="form-group">
+            <label>지출 항목</label>
+            <select id="exp-category">
+                <option value="종자/묘목비">종자/묘목비</option>
+                <option value="비료/농약비">비료/농약비</option>
+                <option value="영농자재비">영농자재비</option>
+                <option value="농기계 임차/수리비">농기계 임차/수리비</option>
+                <option value="인건비">인건비</option>
+                <option value="기타 영농지출">기타 영농지출</option>
+            </select>
+        </div>
+        <div class="form-group"><label>내역</label><input type="text" id="exp-item" placeholder="예: 복합비료 10포"></div>
+        <div class="form-group"><label>금액(원)</label><input type="number" id="exp-amount" placeholder="0"></div>
+        <div class="btn-group">
+            <button class="btn btn-save" onclick="saveRecord('expense')">지출표 저장</button>
+            <button class="btn btn-canvas" onclick="openCanvasModal()">손글씨 메모</button>
+        </div>
+    </div>
+
+    <!-- 5. 작업 시간 -->
+    <div id="tab-work" class="card tab-content no-print">
+        <h3>작업 시간 기록</h3>
+        <div class="form-group"><label>일자</label><input type="date" id="work-date"></div>
+        <div class="form-group"><label>작업 내용</label><input type="text" id="work-item" placeholder="예: 경운 작업, 로터리, 예초작업"></div>
+        <div class="form-group"><label>작업 인원(명)</label><input type="number" id="work-persons" value="1"></div>
+        <div class="form-group"><label>작업 시간(시간)</label><input type="number" id="work-hours" placeholder="0"></div>
+        <div class="btn-group">
+            <button class="btn btn-save" onclick="saveRecord('work')">작업시간 저장</button>
+            <button class="btn btn-canvas" onclick="openCanvasModal()">손글씨 메모</button>
+        </div>
+    </div>
+
+    <!-- 6. 조세 -->
+    <div id="tab-tax" class="card tab-content no-print">
+        <h3>조세 기록</h3>
+        <div class="form-group"><label>일자</label><input type="date" id="tax-date"></div>
+        <div class="form-group">
+            <label>항목 선택</label>
+            <div class="radio-btn-group">
+                <div class="radio-btn active" id="t-tax1" onclick="setTaxCategory('농지세/지방세')">농지세/지방세</div>
+                <div class="radio-btn" id="t-tax2" onclick="setTaxCategory('농용수도/전기요금')">농용수도/전기요금</div>
+                <div class="radio-btn" id="t-tax3" onclick="setTaxCategory('기타 공과금')">기타 공과금</div>
+            </div>
+            <input type="hidden" id="tax-category" value="농지세/지방세">
+        </div>
+        <div class="form-group"><label>내역</label><input type="text" id="tax-item" placeholder="예: 재산세 납부"></div>
+        <div class="form-group"><label>금액(원)</label><input type="number" id="tax-amount" placeholder="0"></div>
+        <div class="btn-group">
+            <button class="btn btn-save" onclick="saveRecord('tax')">조세 저장</button>
+            <button class="btn btn-canvas" onclick="openCanvasModal()">손글씨 메모</button>
+        </div>
+    </div>
+
+    <!-- 데이터 테이블 및 버튼 -->
+    <div class="card" id="printArea">
+        <h3>[<span id="printFarmTitle">농가01</span>] 현장 기록표 (클릭 시 수정)</h3>
+        <div id="printFarmInfo" style="font-size:0.8rem; margin-bottom:8px; color:#555;"></div>
+        <div class="table-responsive">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>일자</th>
+                        <th>분류</th>
+                        <th>항목/내용</th>
+                        <th>수량/시간/금액</th>
+                        <th class="no-print">삭제</th>
+                    </tr>
+                </thead>
+                <tbody id="dataBody"></tbody>
+            </table>
+        </div>
+
+        <div class="btn-group no-print" style="margin-top:12px;">
+            <button class="btn btn-print" onclick="window.print()">보고서 인쇄/PDF</button>
+            <button class="btn btn-sync" onclick="syncToGoogleSheets()">구글시트 연동저장</button>
+            <button class="btn btn-backup" onclick="exportJSON()">백업</button>
+            <button class="btn btn-backup" onclick="document.getElementById('fileInput').click()">파일열기(복원)</button>
+            <input type="file" id="fileInput" style="display:none" onchange="importJSON(event)">
+            <button class="btn btn-danger" onclick="confirmClearFarmData()">현재농가 초기화</button>
+        </div>
+    </div>
+
+    <!-- 농가 인적사항 및 특성 모달 -->
+    <div class="modal-overlay" id="farmModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--primary-dark);">농가 상세 정보 및 특성 등록/수정</h3>
+            <div class="form-group"><label>농가 구분명</label><input type="text" id="m-farm-alias" placeholder="예: 담양 벼재배 농가"></div>
+            <div class="form-group"><label>농가주 성명</label><input type="text" id="m-owner-name" placeholder="예: 홍길동"></div>
+            <div class="form-group"><label>가족 수 (명)</label><input type="number" id="m-family-count" placeholder="예: 4"></div>
+            <div class="form-group"><label>전화번호</label><input type="text" id="m-phone" placeholder="예: 010-1234-5678"></div>
+            <div class="form-group"><label>농가 주소</label><input type="text" id="m-address" placeholder="예: 전남 담양군 ..."></div>
+            <div class="form-group"><label>농가 특성</label><input type="text" id="m-farm-feature" placeholder="예: 전업농, 복합경영, 친환경 인증 농가 등"></div>
+            <div class="form-group"><label>기타 사항</label><textarea id="m-farm-notes" rows="3" placeholder="예: 특이사항, 농기계 보유 현황 등"></textarea></div>
+            <div class="btn-group">
+                <button class="btn btn-save" onclick="saveFarmModal()">저장하기</button>
+                <button class="btn btn-danger" onclick="closeFarmModal()">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 손글씨 캔버스 모달 -->
+    <div class="modal-overlay" id="canvasModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:8px; color:var(--primary-dark);">손글씨 필기 메모장</h3>
+            <canvas id="drawingCanvas"></canvas>
+            <div class="form-group" style="margin-top: 8px;">
+                <label>메모 제목/설명</label>
+                <input type="text" id="canvasNoteTitle" placeholder="예: 현장 특이사항 필기">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-danger" onclick="clearCanvas()">지우기</button>
+                <button class="btn btn-save" onclick="saveCanvasNote()">메모로 저장</button>
+                <button class="btn" style="background:#757575; color:white;" onclick="closeCanvasModal()">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 기록 수정 모달 -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:12px; color:var(--primary-dark);" id="editModalTitle">기록 수정하기</h3>
+            <div id="imageViewerArea" style="display:none; text-align:center; margin-bottom:12px;">
+                <img id="viewFullImage" style="max-width:100%; max-height:280px; border:2px solid var(--primary); border-radius:4px;" alt="큰손글씨">
+            </div>
+            <div id="editFormArea">
+                <div class="form-group"><label>일자</label><input type="date" id="edit-date"></div>
+                <div class="form-group"><label>항목/내용</label><input type="text" id="edit-item"></div>
+                <div class="form-group"><label>수량/시간/금액 표시</label><input type="text" id="edit-valStr"></div>
+                <div class="form-group"><label>수치값(원 또는 시간)</label><input type="number" id="edit-val"></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-save" id="btnSaveEdit" onclick="saveEditedRecord()">수정 저장</button>
+                <button class="btn btn-danger" onclick="closeEditModal()">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>업무노트(농가경제) v1.3.00</p>
+        <p style="margin-top:4px;">Copyright ⓒ <strong>windowho@korea.kr</strong> All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let farmDetails = JSON.parse(localStorage.getItem('farm_app_details_v1300')) || {};
+        let allFarmData = JSON.parse(localStorage.getItem('farm_app_all_data_v1300')) || {};
+        let currentFarmId = localStorage.getItem('farm_app_current_v1300') || 'farm_01';
+        let editingIndex = -1;
+
+        if (Object.keys(farmDetails).length === 0) {
+            farmDetails['farm_01'] = { alias: '농가01', owner: '', family: '', phone: '', address: '', feature: '', notes: '', updatedAt: Date.now() };
+            allFarmData['farm_01'] = [];
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('topDropdownMenu');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-btn') && !event.target.closest('.menu-btn')) {
+                const menu = document.getElementById('topDropdownMenu');
+                if (menu && menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                }
+            }
+        }
+
+        function setCropType(val) {
+            document.getElementById('crop-type').value = val;
+            document.getElementById('r-planting').classList.toggle('active', val === '파종/정식');
+            document.getElementById('r-harvest').classList.toggle('active', val === '수확');
+            document.getElementById('crop-qty-group').style.display = (val === '수확') ? 'block' : 'none';
+        }
+
+        function setTaxCategory(val) {
+            document.getElementById('tax-category').value = val;
+            ['t-tax1', 't-tax2', 't-tax3'].forEach((id, idx) => {
+                let catVals = ['농지세/지방세', '농용수도/전기요금', '기타 공과금'];
+                document.getElementById(id).classList.toggle('active', catVals[idx] === val);
+            });
+        }
+
+        function initFarmSelect() {
+            const select = document.getElementById('farmSelect');
+            const sortType = document.getElementById('sortSelect').value;
+            select.innerHTML = '';
+
+            let farmKeys = Object.keys(farmDetails);
+
+            if (sortType === 'abc') {
+                farmKeys.sort((a, b) => {
+                    let nameA = farmDetails[a].owner || farmDetails[a].alias;
+                    let nameB = farmDetails[b].owner || farmDetails[b].alias;
+                    return nameA.localeCompare(nameB, 'ko');
+                });
+            } else if (sortType === 'recent') {
+                farmKeys.sort((a, b) => (farmDetails[b].updatedAt || 0) - (farmDetails[a].updatedAt || 0));
+            }
+
+            farmKeys.forEach(id => {
+                let info = farmDetails[id];
+                let opt = document.createElement('option');
+                opt.value = id;
+                let displayName = info.owner ? `${info.alias} (${info.owner})` : info.alias;
+                opt.innerText = displayName;
+                if (id === currentFarmId) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            if (!farmDetails[currentFarmId]) currentFarmId = farmKeys[0];
+            updateFarmTitle();
+            updateYearFilterOptions();
+        }
+
+        function updateYearFilterOptions() {
+            const yearSelect = document.getElementById('filterYear');
+            let currentVal = yearSelect.value;
+            let years = new Set();
+            let farmData = allFarmData[currentFarmId] || [];
+            
+            farmData.forEach(item => {
+                if (item.date && item.date.length >= 4) {
+                    years.add(item.date.slice(0, 4));
+                }
+            });
+
+            yearSelect.innerHTML = '<option value="all">전체 연도</option>';
+            Array.from(years).sort().reverse().forEach(y => {
+                let opt = document.createElement('option');
+                opt.value = y;
+                opt.innerText = y + '년';
+                yearSelect.appendChild(opt);
+            });
+            yearSelect.value = currentVal;
+        }
+
+        function updateFarmTitle() {
+            const info = farmDetails[currentFarmId] || { alias: '선택농가', owner: '', family: '', phone: '', address: '', feature: '', notes: '' };
+            const title = info.alias;
+            document.getElementById('currentFarmTitle').innerText = title;
+            document.getElementById('printFarmTitle').innerText = title;
+
+            let summaryText = `성명: ${info.owner || '미기입'} | 가족수: ${info.family ? info.family + '명' : '미기입'} | 연락처: ${info.phone || '미기입'}<br>주소: ${info.address || '미기입'}<br>특성: ${info.feature || '미기입'} | 기타사항: ${info.notes || '미기입'}`;
+            document.getElementById('farmInfoSummary').innerHTML = summaryText;
+            document.getElementById('printFarmInfo').innerHTML = summaryText;
+        }
+
+        function changeFarm() {
+            currentFarmId = document.getElementById('farmSelect').value;
+            localStorage.setItem('farm_app_current_v1300', currentFarmId);
+            updateFarmTitle();
+            updateYearFilterOptions();
+            renderTable();
+        }
+
+        function sortFarms() { initFarmSelect(); }
+
+        function addNewFarm() {
+            let keys = Object.keys(farmDetails);
+            let nextNum = keys.length + 1;
+            let newId = 'farm_' + String(nextNum).padStart(2, '0');
+            
+            farmDetails[newId] = {
+                alias: `농가${String(nextNum).padStart(2, '0')}`,
+                owner: '', family: '', phone: '', address: '', feature: '', notes: '', updatedAt: Date.now()
+            };
+            allFarmData[newId] = [];
+            
+            autoSaveAndBackup();
+            currentFarmId = newId;
+            initFarmSelect();
+            openFarmModal();
+        }
+
+        function openFarmModal() {
+            const info = farmDetails[currentFarmId];
+            document.getElementById('m-farm-alias').value = info.alias || '';
+            document.getElementById('m-owner-name').value = info.owner || '';
+            document.getElementById('m-family-count').value = info.family || '';
+            document.getElementById('m-phone').value = info.phone || '';
+            document.getElementById('m-address').value = info.address || '';
+            document.getElementById('m-farm-feature').value = info.feature || '';
+            document.getElementById('m-farm-notes').value = info.notes || '';
+            document.getElementById('farmModal').style.display = 'flex';
+        }
+
+        function closeFarmModal() { document.getElementById('farmModal').style.display = 'none'; }
+
+        function saveFarmModal() {
+            const alias = document.getElementById('m-farm-alias').value.trim() || `농가${currentFarmId.replace('farm_', '')}`;
+            farmDetails[currentFarmId] = {
+                alias: alias,
+                owner: document.getElementById('m-owner-name').value.trim(),
+                family: document.getElementById('m-family-count').value.trim(),
+                phone: document.getElementById('m-phone').value.trim(),
+                address: document.getElementById('m-address').value.trim(),
+                feature: document.getElementById('m-farm-feature').value.trim(),
+                notes: document.getElementById('m-farm-notes').value.trim(),
+                updatedAt: Date.now()
+            };
+            autoSaveAndBackup();
+            closeFarmModal();
+            initFarmSelect();
+        }
+
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        function resizeCanvas() {
+            const parent = canvas.parentElement;
+            canvas.width = parent.clientWidth;
+            canvas.height = 220;
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#000000';
+        }
+
+        function openCanvasModal() {
+            document.getElementById('canvasModal').style.display = 'flex';
+            setTimeout(resizeCanvas, 100);
+        }
+
+        function closeCanvasModal() { document.getElementById('canvasModal').style.display = 'none'; }
+        function clearCanvas() { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX = e.clientX, clientY = e.clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); });
+        canvas.addEventListener('mousemove', (e) => { if (!isDrawing) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); });
+        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+        canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); e.preventDefault(); });
+        canvas.addEventListener('touchmove', (e) => { if (!isDrawing) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); e.preventDefault(); });
+        canvas.addEventListener('touchend', () => { isDrawing = false; });
+
+        function saveCanvasNote() {
+            const noteTitle = document.getElementById('canvasNoteTitle').value.trim() || '손글씨 메모';
+            const dataURL = canvas.toDataURL('image/png');
+            
+            allFarmData[currentFarmId].push({
+                type: 'note',
+                date: new Date().toISOString().slice(0,10),
+                category: '손글씨메모',
+                item: noteTitle,
+                val: 0,
+                valStr: `<img src="${dataURL}" style="max-width:120px; max-height:50px; border:1px solid #ccc; vertical-align:middle; cursor:pointer;" alt="손글씨">`,
+                imgData: dataURL
+            });
+
+            autoSaveAndBackup();
+            renderTable();
+            document.getElementById('canvasNoteTitle').value = '';
+            closeCanvasModal();
+            alert('손글씨 메모가 자동 저장되었습니다.');
+        }
+
+        document.querySelectorAll('input[type="date"]').forEach(el => el.valueAsDate = new Date());
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        function autoSaveAndBackup() {
+            farmDetails[currentFarmId].updatedAt = Date.now();
+            localStorage.setItem('farm_app_details_v1300', JSON.stringify(farmDetails));
+            localStorage.setItem('farm_app_all_data_v1300', JSON.stringify(allFarmData));
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('dataBody');
+            tbody.innerHTML = '';
+            
+            let farmData = allFarmData[currentFarmId] || [];
+            let fYear = document.getElementById('filterYear').value;
+            let fMonth = document.getElementById('filterMonth').value;
+
+            let cropIncSum = 0, etcIncSum = 0, expSum = 0, workSum = 0;
+
+            farmData.forEach((item, index) => {
+                let itemYear = item.date ? item.date.slice(0, 4) : '';
+                let itemMonth = item.date && item.date.length >= 7 ? item.date.slice(5, 7) : '';
+
+                if (fYear !== 'all' && itemYear !== fYear) return;
+                if (fMonth !== 'all' && itemMonth !== fMonth) return;
+
+                const tr = document.createElement('tr');
+                tr.className = 'clickable-row';
+                tr.innerHTML = `
+                    <td onclick="openEditModal(${index})">${item.date}</td>
+                    <td onclick="openEditModal(${index})">${item.category}</td>
+                    <td onclick="openEditModal(${index})">${item.item}</td>
+                    <td onclick="openEditModal(${index})">${item.valStr}</td>
+                    <td class="no-print"><button onclick="deleteRecord(${index})">X</button></td>
+                `;
+                tbody.appendChild(tr);
+
+                if (item.type === 'cropInc') cropIncSum += item.val;
+                if (item.type === 'etcInc') etcIncSum += item.val;
+                if (item.type === 'expense' || item.type === 'tax') expSum += item.val;
+                if (item.type === 'work') workSum += item.val;
+            });
+
+            document.getElementById('cropIncomeSum').innerText = cropIncSum.toLocaleString();
+            document.getElementById('etcIncomeSum').innerText = etcIncSum.toLocaleString();
+            document.getElementById('expenseSum').innerText = expSum.toLocaleString();
+            document.getElementById('workTimeSum').innerText = workSum;
+
+            autoSaveAndBackup();
+        }
+
+        function openEditModal(index) {
+            editingIndex = index;
+            const item = allFarmData[currentFarmId][index];
+            document.getElementById('editModalTitle').innerText = item.type === 'note' ? '손글씨 메모 크게 보기' : '기록 수정하기';
+            
+            if (item.imgData || item.type === 'note') {
+                document.getElementById('imageViewerArea').style.display = 'block';
+                document.getElementById('viewFullImage').src = item.imgData || item.valStr.match(/src="([^"]+)"/)[1];
+            } else {
+                document.getElementById('imageViewerArea').style.display = 'none';
+            }
+
+            document.getElementById('edit-date').value = item.date;
+            document.getElementById('edit-item').value = item.item;
+            document.getElementById('edit-valStr').value = item.valStr.replace(/<[^>]*>?/gm, '');
+            document.getElementById('edit-val').value = item.val;
+
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+
+        function saveEditedRecord() {
+            if (editingIndex === -1) return;
+            const item = allFarmData[currentFarmId][editingIndex];
+
+            item.date = document.getElementById('edit-date').value;
+            item.item = document.getElementById('edit-item').value;
+            item.val = Number(document.getElementById('edit-val').value) || 0;
+            if (item.type !== 'note') item.valStr = document.getElementById('edit-valStr').value;
+
+            autoSaveAndBackup();
+            renderTable();
+            closeEditModal();
+            alert('수정 내용이 저장되었습니다.');
+        }
+
+        function saveIncomeRecord() {
+            const date = document.getElementById('cropInc-date').value;
+            const itemInput = document.getElementById('cropInc-item').value;
+            const qty = document.getElementById('cropInc-qty').value;
+            const amount = Number(document.getElementById('cropInc-amount').value) || 0;
+            const fee = Number(document.getElementById('cropInc-fee').value) || 0;
+            const spotKg = document.getElementById('cropInc-spotKg').value;
+            const spotItem = document.getElementById('cropInc-spotItem').value;
+            const selfCons = document.getElementById('cropInc-self').value;
+            const gift = document.getElementById('cropInc-gift').value;
+            const other = document.getElementById('cropInc-other').value;
+
+            if (!itemInput) { alert('품목명을 입력해 주세요.'); return; }
+
+            let details = `판매:${amount.toLocaleString()}원(수수료:${fee.toLocaleString()})`;
+            if (qty) details += `, 수량:${qty}`;
+            if (spotKg) details += `, 현물:${spotKg}kg(${spotItem || '기타'})`;
+            if (selfCons) details += `, 자가소비:${selfCons}`;
+            if (gift) details += `, 증여:${gift}`;
+            if (other) details += `, 기타:${other}`;
+
+            allFarmData[currentFarmId].push({
+                type: 'cropInc',
+                date: date,
+                category: '농작물수입',
+                item: itemInput,
+                val: amount,
+                valStr: details
+            });
+
+            autoSaveAndBackup();
+            renderTable();
+            updateYearFilterOptions();
+            alert('농작물 수입이 저장되었습니다.');
+        }
+
+        function saveEtcIncomeRecord() {
+            const date = document.getElementById('etcInc-date').value;
+            const category = document.getElementById('etcInc-category').value;
+            const item = document.getElementById('etcInc-item').value;
+            const amount = Number(document.getElementById('etcInc-amount').value) || 0;
+
+            if (!item) { alert('내역/출처를 입력해 주세요.'); return; }
+
+            allFarmData[currentFarmId].push({
+                type: 'etcInc',
+                date: date,
+                category: category,
+                item: item,
+                val: amount,
+                valStr: amount.toLocaleString() + '원'
+            });
+
+            autoSaveAndBackup();
+            renderTable();
+            updateYearFilterOptions();
+            alert('수입표가 저장되었습니다.');
+        }
+
+        function saveRecord(type) {
+            let date, category, item, val, valStr;
+
+            if (type === 'crop') {
+                date = document.getElementById('crop-date').value;
+                category = document.getElementById('crop-type').value;
+                const alias = document.getElementById('crop-alias').value.trim();
+                const cropName = document.getElementById('crop-name').value;
+                const cropArea = document.getElementById('crop-area').value;
+
+                item = (alias ? `[${alias}] ` : '') + cropName + (cropArea ? ` (${cropArea})` : '');
+                valStr = (category === '수확') ? document.getElementById('crop-qty').value : '-';
+                val = 0;
+            } else if (type === 'expense') {
+                date = document.getElementById('exp-date').value;
+                category = document.getElementById('exp-category').value;
+                item = document.getElementById('exp-item').value;
+                val = Number(document.getElementById('exp-amount').value) || 0;
+                valStr = val.toLocaleString() + '원';
+            } else if (type === 'work') {
+                date = document.getElementById('work-date').value;
+                category = '작업시간';
+                item = document.getElementById('work-item').value + ' (' + document.getElementById('work-persons').value + '명)';
+                val = Number(document.getElementById('work-hours').value) || 0;
+                valStr = val + '시간';
+            } else if (type === 'tax') {
+                date = document.getElementById('tax-date').value;
+                category = document.getElementById('tax-category').value;
+                item = document.getElementById('tax-item').value;
+                val = Number(document.getElementById('tax-amount').value) || 0;
+                valStr = val.toLocaleString() + '원';
+            }
+
+            allFarmData[currentFarmId].push({ type, date, category, item, val, valStr });
+
+            autoSaveAndBackup();
+            renderTable();
+            updateYearFilterOptions();
+            alert('기록이 저장되었습니다.');
+        }
+
+        function deleteRecord(index) {
+            if (confirm('이 기록을 삭제하시겠습니까?')) {
+                allFarmData[currentFarmId].splice(index, 1);
+                autoSaveAndBackup();
+                renderTable();
+            }
+        }
+
+        function confirmClearFarmData() {
+            let step1 = confirm(`[${farmDetails[currentFarmId].alias}] 데이터를 정말 초기화하시겠습니까? (1/3 단계)`);
+            if (!step1) return;
+            let step2 = confirm('초기화하면 모든 기록이 삭제됩니다. 계속하시겠습니까? (2/3 단계)');
+            if (!step2) return;
+            let step3 = confirm('마지막 경고입니다! 정말로 현재 농가 데이터를 모두 지우시겠습니까? (3/3 단계)');
+            if (step3) {
+                allFarmData[currentFarmId] = [];
+                autoSaveAndBackup();
+                renderTable();
+                alert('초기화되었습니다.');
+            }
+        }
+
+        function syncToGoogleSheets() {
+            const GOOGLE_SCRIPT_URL = "여기에_구글앱스스크립트_웹앱URL을_입력하세요";
+            
+            if (GOOGLE_SCRIPT_URL.includes("여기에")) {
+                alert("구글 시트 연동 주소가 설정되지 않았습니다. 백업(파일 다운로드) 기능을 이용하시면 안전하게 데이터를 보관하실 수 있습니다.");
+                exportJSON();
+                return;
+            }
+
+            const syncData = { details: farmDetails, data: allFarmData };
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(syncData)
+            }).then(() => {
+                alert("구글 스프레드시트에 데이터가 성공적으로 업로드 및 연동되었습니다!");
+            }).catch(err => {
+                alert("구글 시트 연동 중 오류가 발생했습니다. 백업 기능을 이용해 주세요.");
+                exportJSON();
+            });
+        }
+
+        function exportJSON() {
+            const backupObj = { details: farmDetails, data: allFarmData };
+            const blob = new Blob([JSON.stringify(backupObj, null, 2)], { type: 'application/json;charset=utf-8' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `업무노트_농가경제_백업_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed.details && parsed.data) {
+                        farmDetails = parsed.details;
+                        allFarmData = parsed.data;
+                    }
+                    autoSaveAndBackup();
+                    initFarmSelect();
+                    renderTable();
+                    alert('데이터를 성공적으로 복원했습니다.');
+                } catch (err) {
+                    alert('올바른 백업 파일이 아닙니다.');
+                }
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        initFarmSelect();
+        renderTable();
+    </script>
+</body>
+</html>
