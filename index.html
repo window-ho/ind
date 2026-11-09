@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>워크플래너 (Work Planner) v0.49</title>
+    <title>워크플래너 (Work Planner) v0.50</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -64,7 +64,7 @@
                 <i class="fa-solid fa-briefcase text-indigo-700 text-3xl"></i>
             </div>
             <h1 class="text-2xl font-black tracking-tight mb-0.5">워크플래너</h1>
-            <p class="text-indigo-200 text-[11px] font-semibold tracking-widest uppercase mb-1">Work Planner v0.49</p>
+            <p class="text-indigo-200 text-[11px] font-semibold tracking-widest uppercase mb-1">Work Planner v0.50</p>
             <p class="text-indigo-200 text-xs font-medium">스마트한 출장 및 업무 일정 관리 시스템</p>
         </div>
         <div class="absolute bottom-10 text-indigo-300 text-[11px] font-light">
@@ -78,12 +78,12 @@
         <!-- 슬림 헤더 -->
         <header class="bg-indigo-700 text-white py-1.5 px-2 shadow-md flex flex-col gap-1.5 shrink-0 w-full">
             <div class="flex justify-between items-center w-full">
-                <!-- 좌측 타이틀 (v0.49 반영) -->
+                <!-- 좌측 타이틀 -->
                 <div class="flex items-center gap-1.5 shrink-0">
                     <i class="fa-solid fa-briefcase text-yellow-300 text-xs"></i>
                     <h1 class="font-bold text-xs tracking-tight leading-none">워크플래너</h1>
                     <span class="text-[10px] text-indigo-200 font-medium">Work Planner</span>
-                    <span class="text-[9px] bg-indigo-800 px-1.5 py-0.5 rounded text-yellow-300 font-bold">v0.49</span>
+                    <span class="text-[9px] bg-indigo-800 px-1.5 py-0.5 rounded text-yellow-300 font-bold">v0.50</span>
                 </div>
                 
                 <!-- 우측 상단 버튼들 -->
@@ -232,38 +232,32 @@
         </div>
     </div>
 
-    <!-- 백업 및 복원 모달 (JSON 파일 다운로드/업로드 + 텍스트 복사/붙여넣기 병행) -->
+    <!-- 백업 및 복원 모달 (앱 튕김 방지 텍스트 복사/붙여넣기 방식) -->
     <div id="backupModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
         <div class="bg-white w-full max-w-md rounded-2xl overflow-hidden shadow-xl max-h-[85vh] flex flex-col">
             <div class="p-3 border-b flex justify-between items-center bg-indigo-700 text-white">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>데이터 백업 및 복원 (v0.49)</h3>
+                <h3 class="font-bold text-base"><i class="fa-solid fa-cloud-arrow-up mr-1.5"></i>데이터 백업 및 복원 (v0.50 안전 버전)</h3>
                 <button onclick="closeBackupModal()" class="text-white hover:text-indigo-200 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-4 overflow-y-auto space-y-4 text-xs text-slate-700 custom-scrollbar leading-relaxed">
-                <!-- 1. JSON 파일 방식 -->
+                <!-- 1. 백업 섹션 -->
                 <div class="bg-indigo-50/50 p-3 rounded-xl border border-indigo-100 space-y-2">
-                    <label class="font-bold text-indigo-900 block"><i class="fa-solid fa-file-arrow-down mr-1"></i> 방법 1: JSON 파일로 저장 및 불러오기 (추천)</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="exportJsonFile()" class="py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded font-bold text-xs shadow">
-                            <i class="fa-solid fa-download mr-1"></i>JSON 파일 다운
-                        </button>
-                        <label class="py-2.5 bg-slate-700 hover:bg-slate-800 text-white rounded font-bold text-xs shadow text-center cursor-pointer">
-                            <i class="fa-solid fa-upload mr-1"></i>JSON 파일 선택
-                            <input type="file" id="jsonFileInput" accept=".json" onchange="importJsonFile(event)" class="hidden">
-                        </label>
-                    </div>
+                    <label class="font-bold text-indigo-900 block"><i class="fa-solid fa-copy mr-1"></i> 1. 데이터 백업 (내보내기)</label>
+                    <button onclick="copyBackupCode()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded font-bold text-xs shadow">
+                        백업 코드 생성 및 복사하기
+                    </button>
+                    <textarea id="backupTextArea" rows="3" placeholder="백업 버튼을 누르면 여기에 데이터 코드가 나타납니다..." class="w-full p-2 border rounded text-xs font-mono outline-none focus:ring-1 focus:ring-indigo-500 resize-none bg-white"></textarea>
+                    <div class="text-[10px] text-slate-500">💡 생성된 코드를 메모장이나 카카오톡에 붙여넣어 안전하게 보관하세요.</div>
                 </div>
 
-                <!-- 2. 텍스트 코드 복사/붙여넣기 방식 -->
+                <!-- 2. 복원 섹션 -->
                 <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-                    <label class="font-bold text-slate-800 block"><i class="fa-solid fa-copy mr-1"></i> 방법 2: 텍스트 코드 직접 복사/붙여넣기</label>
-                    <button onclick="copyBackupCode()" class="w-full py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded font-bold text-xs shadow">
-                        백업 코드 전체 복사하기
+                    <label class="font-bold text-slate-800 block"><i class="fa-solid fa-paste mr-1"></i> 2. 데이터 복원 (가져오기)</label>
+                    <textarea id="restoreTextArea" rows="3" placeholder="보관해 둔 백업 코드를 이곳에 길게 눌러 붙여넣으세요..." class="w-full p-2 border rounded text-xs font-mono outline-none focus:ring-1 focus:ring-indigo-500 resize-none bg-white"></textarea>
+                    <button onclick="restoreBackupCode()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded font-bold text-xs shadow">
+                        입력한 코드로 데이터 복원 실행
                     </button>
-                    <textarea id="backupTextArea" rows="3" placeholder="여기에 백업 코드를 길게 눌러 붙여넣으세요..." class="w-full p-2 border rounded text-xs font-mono outline-none focus:ring-1 focus:ring-indigo-500 resize-none"></textarea>
-                    <button onclick="restoreBackupCode()" class="w-full py-2 bg-slate-700 hover:bg-slate-800 text-white rounded font-bold text-xs shadow">
-                        입력한 코드로 복원 실행
-                    </button>
+                    <div class="text-[10px] text-slate-500">⚠️ 기존 데이터 위에 백업한 내용이 안전하게 덮어씌워집니다.</div>
                 </div>
             </div>
             <div class="p-3 border-t bg-slate-50 text-center">
@@ -276,7 +270,7 @@
     <div id="helpModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
         <div class="bg-white w-full max-w-md rounded-2xl overflow-hidden shadow-xl max-h-[85vh] flex flex-col">
             <div class="p-3 border-b flex justify-between items-center bg-indigo-700 text-white">
-                <h3 class="font-bold text-base"><i class="fa-solid fa-circle-question mr-1.5"></i>워크플래너 통합 가이드 (v0.49)</h3>
+                <h3 class="font-bold text-base"><i class="fa-solid fa-circle-question mr-1.5"></i>워크플래너 통합 가이드 (v0.50)</h3>
                 <button onclick="closeHelpModal()" class="text-white hover:text-indigo-200 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="p-4 overflow-y-auto space-y-2.5 text-xs text-slate-700 custom-scrollbar leading-relaxed">
@@ -305,8 +299,8 @@
                     <p>상단 통계 바를 터치하면 연간 총 출장일수와 수당, 월별 요약 및 항목별 세부 내역을 한눈에 조회할 수 있습니다.</p>
                 </div>
                 <div class="bg-slate-100 p-2.5 rounded-lg border border-slate-200">
-                    <span class="font-bold text-slate-800 block mb-0.5">7. JSON 파일 및 텍스트 백업·복원</span>
-                    <p>상단의 <strong>[백업]</strong> 버튼을 눌러 JSON 파일로 간편하게 저장하거나 텍스트 코드로 안전하게 데이터를 유지할 수 있습니다.</p>
+                    <span class="font-bold text-slate-800 block mb-0.5">7. 앱 튕김 없는 안전한 텍스트 백업·복원</span>
+                    <p>상단의 <strong>[백업]</strong> 버튼을 눌러 텍스트 코드로 앱 충돌 없이 안전하게 데이터를 유지할 수 있습니다.</p>
                 </div>
                 <div class="pt-2 text-center border-t border-slate-200 text-slate-500 font-medium text-[11px]">
                     Copyright ⓒ windowho@korea.kr All Rights Reserved.
@@ -1009,61 +1003,51 @@
         function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
         function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
         
-        // JSON 파일 다운로드 기능
-        function exportJsonFile() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ appData, annualTotalDays, rewardItems }));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `work_planner_backup_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        // JSON 파일 업로드(불러오기) 기능
-        function importJsonFile(event) {
-            const fileReader = new FileReader();
-            if (event.target.files[0]) {
-                fileReader.readAsText(event.target.files[0], "UTF-8");
-                fileReader.onload = (e) => {
-                    try {
-                        const parsed = JSON.parse(e.target.result);
-                        if (confirm('JSON 파일에서 데이터를 불러와 복원하시겠습니까?')) {
-                            const rawData = parsed.appData || parsed;
-                            appData = migrateLegacyData(rawData);
-                            annualTotalDays = parsed.annualTotalDays || 15.0;
-                            rewardItems = parsed.rewardItems || [];
-                            saveData(); closeBackupModal(); alert('JSON 파일이 성공적으로 복원되었습니다!');
-                        }
-                    } catch(err) {
-                        alert('올바른 JSON 백업 파일이 아닙니다.');
-                    }
-                };
-            }
-        }
-
+        // 앱 튕김 방지 안전 백업 (클립보드 및 텍스트 박스 출력)
         function copyBackupCode() {
-            const dataStr = JSON.stringify({ appData, annualTotalDays, rewardItems });
-            if (navigator.clipboard) { 
-                navigator.clipboard.writeText(dataStr).then(() => alert('백업 코드가 클립보드에 복사되었습니다!')); 
-            } else {
-                prompt("복사하기를 지원하지 않는 환경입니다. 아래 코드를 직접 복사하세요:", dataStr);
+            try {
+                const dataStr = JSON.stringify({ appData, annualTotalDays, rewardItems });
+                const backupTextArea = document.getElementById('backupTextArea');
+                backupTextArea.value = dataStr;
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(dataStr).then(() => {
+                        alert('✅ 백업 코드가 클립보드에 복사되었습니다!\n메모장이나 카카오톡에 붙여넣어 안전하게 보관하세요.');
+                    }).catch(() => {
+                        alert('✅ 아래 박스에 백업 코드가 생성되었습니다. 전체를 복사해 주세요!');
+                    });
+                } else {
+                    backupTextArea.select();
+                    alert('✅ 아래 박스에 백업 코드가 생성되었습니다. 전체를 복사해 주세요!');
+                }
+            } catch (e) {
+                alert('백업 생성 중 오류가 발생했습니다: ' + e.message);
             }
         }
 
+        // 앱 튕김 방지 안전 복원 (텍스트 박스 입력값 적용)
         function restoreBackupCode() {
-            const raw = document.getElementById('backupTextArea').value.trim();
-            if (!raw) return alert('복원할 코드가 없습니다.');
-            try {
-                const parsed = JSON.parse(raw);
-                if (confirm('데이터를 복원하시겠습니까?')) {
+            const raw = document.getElementById('restoreTextArea').value.trim();
+            if (!raw) {
+                alert('⚠️ 복원할 백업 코드를 입력창에 먼저 붙여넣어 주세요!');
+                return;
+            }
+
+            if (confirm('⚠️ 현재 데이터가 백업 내용으로 덮어씌워집니다. 진행하시겠습니까?')) {
+                try {
+                    const parsed = JSON.parse(raw);
                     const rawData = parsed.appData || parsed;
                     appData = migrateLegacyData(rawData);
                     annualTotalDays = parsed.annualTotalDays || 15.0;
                     rewardItems = parsed.rewardItems || [];
-                    saveData(); closeBackupModal(); alert('데이터가 성공적으로 복원되었습니다!');
+                    saveData(); 
+                    closeBackupModal(); 
+                    alert('🎉 데이터가 성공적으로 복원되었습니다!\n앱을 새로고침합니다.');
+                    location.reload();
+                } catch(e) { 
+                    alert('❌ 올바르지 않은 백업 코드입니다. 형식을 다시 확인해 주세요.'); 
                 }
-            } catch(e) { alert('잘못된 백업 코드입니다. 올바른 코드를 입력해 주세요.'); }
+            }
         }
 
         function openHelpModal() { document.getElementById('helpModal').classList.remove('hidden'); document.getElementById('helpModal').classList.add('flex'); }
