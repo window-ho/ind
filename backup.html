@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <!-- 검색엔진 노출 및 수집 차단 보안 적용 -->
+    <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>워크플래너 JSON 백업 변환기</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,7 +90,6 @@
             }
         });
 
-        // 클립보드 붙여넣기 버튼 전용 함수
         async function pasteFromClipboard() {
             try {
                 if (navigator.clipboard && navigator.clipboard.readText) {
