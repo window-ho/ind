@@ -8,6 +8,22 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+
         body { font-family: 'Pretendard', sans-serif; }
     </style>
 </head>
@@ -23,7 +39,7 @@
                     <p class="text-[11px] text-indigo-200">텍스트 코드 ➔ JSON 파일 변환 전용</p>
                 </div>
             </div>
-            <span class="text-[10px] bg-indigo-900 px-2 py-0.5 rounded text-yellow-300 font-bold">도구</span>
+            <span class="text-[10px] bg-indigo-900 px-2 py-0.5 rounded text-yellow-300 font-bold">보안 적용</span>
         </div>
 
         <!-- 본문 콘텐츠 -->
@@ -31,15 +47,19 @@
             <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 space-y-1">
                 <span class="font-bold text-indigo-900 block text-xs">💡 사용 방법</span>
                 <ol class="list-decimal list-inside text-slate-600 space-y-1 text-[11.5px]">
-                    <li>워크플래너 앱에서 가져온 코드가 아래에 자동으로 붙여넣어집니다.</li>
-                    <li>만약 비어있다면 <strong>[붙여넣기]</strong>를 직접 해주세요.</li>
+                    <li>아래 <strong>[클립보드 붙여넣기]</strong> 버튼을 누릅니다.</li>
                     <li><strong>[JSON 백업 파일 다운로드]</strong> 버튼을 누릅니다.</li>
                 </ol>
             </div>
 
             <div>
-                <label class="block font-bold text-slate-800 mb-1.5"><i class="fa-solid fa-code mr-1 text-indigo-600"></i>백업 코드 확인</label>
-                <textarea id="codeInput" rows="6" placeholder="여기에 백업 코드를 붙여넣으세요..." class="w-full p-3 border rounded-xl font-mono text-[11px] bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none transition-all border-slate-300"></textarea>
+                <div class="flex justify-between items-center mb-1.5">
+                    <label class="font-bold text-slate-800"><i class="fa-solid fa-code mr-1 text-indigo-600"></i>백업 코드 입력</label>
+                    <button onclick="pasteFromClipboard()" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-bold shadow-sm">
+                        <i class="fa-solid fa-paste mr-1"></i>클립보드 붙여넣기
+                    </button>
+                </div>
+                <textarea id="codeInput" rows="6" placeholder="버튼을 누르거나 여기에 붙여넣으세요..." class="w-full p-3 border rounded-xl font-mono text-[11px] bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none resize-none transition-all border-slate-300"></textarea>
             </div>
 
             <button onclick="convertToJSON()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
@@ -54,6 +74,35 @@
     </div>
 
     <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => {
+            if (e.target.tagName !== 'TEXTAREA') e.preventDefault();
+        });
+        document.addEventListener('copy', e => {
+            if (e.target.tagName !== 'TEXTAREA') e.preventDefault();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12') { e.preventDefault(); return false; }
+            if ((e.ctrlKey || e.metaKey) && ['u', 's', 'i', 'j', 'p'].includes(e.key.toLowerCase())) {
+                if (e.target.tagName !== 'TEXTAREA') { e.preventDefault(); return false; }
+            }
+        });
+
+        // 클립보드 붙여넣기 버튼 전용 함수
+        async function pasteFromClipboard() {
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const text = await navigator.clipboard.readText();
+                    document.getElementById('codeInput').value = text;
+                    alert('클립보드 내용이 정상적으로 붙여넣어졌습니다!');
+                } else {
+                    alert('이 브라우저 환경에서는 자동 붙여넣기가 지원되지 않습니다.');
+                }
+            } catch (err) {
+                alert('붙여넣기 권한이 차단되어 있습니다.');
+            }
+        }
+
         function convertToJSON() {
             const rawCode = document.getElementById('codeInput').value.trim();
             if (!rawCode) {
