@@ -2,9 +2,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <!-- 검색엔진 노출 및 수집 차단 보안 적용 -->
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>워크플래너 (Work Planner) v0.79</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -51,7 +53,7 @@
         }
 
         #splashScreen {
-            transition: opacity 0.25s ease-out;
+            transition: opacity 0.3s ease-out;
         }
     </style>
 </head>
@@ -59,7 +61,7 @@
 
     <!-- 앱 시작 구동 화면 -->
     <div id="splashScreen" class="fixed inset-0 bg-indigo-700 z-[999] flex flex-col items-center justify-center text-white p-6">
-        <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md shadow-2xl flex flex-col items-center border border-white/20">
+        <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md shadow-2xl flex flex-col items-center border border-white/20 animate-pulse">
             <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4">
                 <i class="fa-solid fa-briefcase text-indigo-700 text-3xl"></i>
             </div>
@@ -78,6 +80,7 @@
         <!-- 슬림 헤더 -->
         <header class="bg-indigo-700 text-white py-2 px-2.5 shadow-md flex flex-col gap-2 shrink-0 w-full">
             <div class="flex justify-between items-center w-full">
+                <!-- 좌측 타이틀 -->
                 <div class="flex items-center gap-1.5 shrink-0">
                     <i class="fa-solid fa-briefcase text-yellow-300 text-xs"></i>
                     <h1 class="font-bold text-xs tracking-tight leading-none">워크플래너</h1>
@@ -85,6 +88,7 @@
                     <span class="text-[9px] bg-indigo-800 px-1.5 py-0.5 rounded text-yellow-300 font-bold">v0.79</span>
                 </div>
                 
+                <!-- 우측 상단 버튼들 -->
                 <div class="flex items-center gap-1 shrink-0">
                     <button onclick="openAnnualLeaveModal()" class="px-1.5 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[9.5px] font-bold shadow-sm whitespace-nowrap">연차/보상</button>
                     <button onclick="openHelpModal()" class="px-1.5 py-0.5 bg-indigo-800 hover:bg-indigo-900 text-indigo-100 rounded text-[9.5px] font-semibold whitespace-nowrap">설명서</button>
@@ -93,12 +97,15 @@
                 </div>
             </div>
 
+            <!-- 월 통계 요약 바 영역 및 삼선/검색 -->
             <div class="flex items-center gap-1.5">
+                <!-- 좌측 삼선 메뉴 -->
                 <div class="relative shrink-0">
                     <button id="menuToggleBtn" onclick="toggleMenuDropdown(event)" class="w-8 h-12 bg-indigo-800/90 hover:bg-indigo-800 text-white rounded-lg flex flex-col items-center justify-center text-xs shadow-inner transition-all border border-indigo-600/50 focus:outline-none" title="메뉴 열기">
                         <i class="fa-solid fa-bars text-[12px]"></i>
                     </button>
 
+                    <!-- 삼선 클릭 시 펼쳐지는 드롭다운 메뉴 -->
                     <div id="dropdownMenu" class="absolute left-0 top-13 w-52 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 hidden flex-col z-[100] overflow-hidden py-1.5">
                         <button onclick="openSearchModal(); hideMenuDropdown();" class="flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-indigo-700 hover:bg-indigo-50 transition-colors text-left w-full whitespace-nowrap">
                             <i class="fa-solid fa-magnifying-glass w-4"></i> 일정/메모 통합 검색
@@ -124,6 +131,7 @@
                     </div>
                 </div>
 
+                <!-- 중앙 통계 요약 영역 (h-12로 메뉴 및 검색 버튼과 높이 일치) -->
                 <div onclick="openStatsModal()" class="flex-1 grid grid-cols-3 gap-1 bg-indigo-800/80 hover:bg-indigo-800 h-12 px-1.5 rounded-lg text-center cursor-pointer transition-colors shadow-inner min-w-0 items-center" title="클릭하여 통계 보기">
                     <div class="truncate px-0.5">
                         <span class="text-indigo-200 block text-[8px] leading-tight">이번달 출장 <i class="fa-solid fa-chevron-right text-[6px]"></i></span>
@@ -139,6 +147,7 @@
                     </div>
                 </div>
 
+                <!-- 우측 돋보기 검색 버튼 -->
                 <button onclick="openSearchModal()" class="w-9 h-12 bg-indigo-800/90 hover:bg-indigo-600 text-yellow-300 rounded-lg flex flex-col items-center justify-center shadow-inner transition-all border border-indigo-600/50 shrink-0 focus:outline-none" title="일정/메모 검색">
                     <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     <span class="text-[7.5px] text-indigo-200 font-bold mt-0.5 leading-none">검색</span>
@@ -146,6 +155,7 @@
             </div>
         </header>
 
+        <!-- 달력 컨트롤러 -->
         <div class="flex justify-between items-center px-4 py-1.5 bg-slate-50 border-b shrink-0 w-full">
             <button onclick="changeMonth(-1)" class="p-1 text-slate-600 hover:text-indigo-600">
                 <i class="fa-solid fa-chevron-left text-xs"></i>
@@ -164,6 +174,7 @@
             </div>
         </div>
 
+        <!-- 달력 요일 헤더 -->
         <div class="calendar-grid-custom text-center border-b border-slate-200 bg-slate-50 text-[11px] font-semibold py-1 shrink-0 w-full">
             <span class="text-red-500">일</span>
             <span>월</span>
@@ -174,6 +185,7 @@
             <span class="text-blue-500">토</span>
         </div>
 
+        <!-- 달력 본체 Grid -->
         <div id="calendarGrid" class="calendar-grid-custom flex-1 bg-slate-200 gap-[0.5px] overflow-hidden w-full touch-pan-y pb-1" style="grid-auto-rows: minmax(0, 1fr);"></div>
     </div>
 
@@ -248,10 +260,9 @@
             <div class="p-4 overflow-y-auto space-y-3 text-xs text-slate-700 custom-scrollbar leading-relaxed">
                 <div class="bg-amber-50 p-2.5 rounded-lg border border-amber-200 space-y-1">
                     <span class="font-bold text-amber-900 block mb-0.5">v0.79 업데이트 주요 사항</span>
-                    <p>• 앱(웹뷰) 환경 스플래시 로딩 화면 무한 대기 방지 안전장치 강화</p>
                     <p>• 달력 출장비 표기를 천 원 단위 반올림 정수(예: 16,000원 → 16, 8,000원 → 8, 56,900원 → 57)로 개선</p>
                     <p>• 출장 통계 현황 순서를 ① 월 상세 내역 → ② 월별 요약 → ③ 연간 총 출장일수 및 출장금액 → ④ 출장 항목별 연간 총액 순으로 개편</p>
-                    <p>• 달력 맨 아래 마지막 주 근무시간 및 토요일 주간 합계가 잘리지 않도록 하단 여백 보강</p>
+                    <p>• 마지막 주 근무시간 가시성 보강 및 앱 로딩 화면 해제 안전장치 적용</p>
                 </div>
             </div>
             <div class="p-3 border-t bg-slate-50 flex flex-col items-center gap-1">
@@ -430,6 +441,7 @@
             </div>
             <div class="p-4 overflow-y-auto space-y-4 custom-scrollbar text-sm">
                 
+                <!-- 출퇴근 및 근무시간 설정 -->
                 <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                     <div class="flex items-center justify-between">
                         <label class="block font-bold text-xs text-slate-800"><i class="fa-solid fa-clock mr-1 text-indigo-600"></i>근무 시간 관리 (기본 09:00 ~ 18:00)</label>
@@ -455,6 +467,7 @@
                     </div>
                 </div>
 
+                <!-- 출장 유형 선택 -->
                 <div class="bg-indigo-50/50 p-3 rounded-lg border border-indigo-100 space-y-2">
                     <label class="block font-bold text-xs text-indigo-900">출장 구분 선택 (버튼 누를 시 수당 자동 연동)</label>
                     <div class="grid grid-cols-4 gap-1">
@@ -486,6 +499,7 @@
                     </div>
                 </div>
 
+                <!-- 휴가(연차/보상) 선택 -->
                 <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100 space-y-2.5">
                     <label class="block font-bold text-xs text-blue-900">휴가(연차/보상) 선택</label>
                     <div class="grid grid-cols-2 gap-1.5">
@@ -600,7 +614,7 @@
         </div>
     </div>
 
-    <!-- 통계 조회 모달 -->
+    <!-- 통계 조회 모달 (순서: 1.월 상세 → 2.월별 요약 → 3.연간 총 출장일수 및 출장금액 → 4.출장 항목별 연간 총액) -->
     <div id="statsModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
         <div class="bg-white w-full max-w-md rounded-2xl max-h-[85vh] flex flex-col overflow-hidden shadow-xl">
             <div class="p-3 border-b flex justify-between items-center bg-indigo-700 text-white">
@@ -657,11 +671,10 @@
     </div>
 
     <script>
-        let splashDismissed = false;
-
-        function dismissSplashScreen() {
-            if (splashDismissed) return;
-            splashDismissed = true;
+        let splashClosed = false;
+        function closeSplashSafely() {
+            if (splashClosed) return;
+            splashClosed = true;
             try {
                 const splash = document.getElementById('splashScreen');
                 if (splash) {
@@ -672,16 +685,15 @@
                             splash.style.display = 'none';
                             if (splash.parentNode) splash.parentNode.removeChild(splash);
                         } catch (e) {}
-                    }, 260);
+                    }, 300);
                 }
             } catch (e) {}
         }
 
-        // 앱(웹뷰) 환경에서도 확실히 넘어갈 수 있도록 다중 타이머 안전장치 적용
         setTimeout(() => {
-            dismissSplashScreen();
+            closeSplashSafely();
             try { checkAndShowAutoAlert(); } catch (e) {}
-        }, 800);
+        }, 900);
 
         setTimeout(() => {
             try {
@@ -1027,7 +1039,7 @@
             return dayData.isGovCar ? base * 0.5 : base;
         }
 
-        // 천 원 단위 반올림 정수 표기 포맷 함수 (예: 16000 -> "16", 8000 -> "8", 56900 -> "57")
+        // 천 원 단위 반올림 정수 포맷 함수 (예: 16000 -> "16", 8000 -> "8", 56900 -> "57")
         function formatAmountInThousand(amt) {
             return String(Math.round(amt / 1000));
         }
@@ -1186,6 +1198,7 @@
                 }
             }
 
+            // 1. 전월 날짜 렌더링
             for (let i = firstDay - 1; i >= 0; i--) {
                 const dayNum = pLastDate - i;
                 const pDateKey = formatDateKey(pYear, pMonth, dayNum);
@@ -1244,834 +1257,4 @@
                 }
                 bottomAreaHtml += `</div>`;
 
-                cell.innerHTML = headerHtml + contentHtml + bottomAreaHtml;
-                grid.appendChild(cell);
-            }
-
-            const today = new Date();
-            const todayStr = formatDateKey(today.getFullYear(), today.getMonth(), today.getDate());
-
-            for (let day = 1; day <= lastDate; day++) {
-                const dateKey = formatDateKey(year, month, day);
-                const dayObj = new Date(year, month, day);
-                const dayOfWeek = dayObj.getDay();
-                const holidayName = holidays[dateKey];
-                const dayData = appData[dateKey] || {};
-
-                if (dayData.tripType) {
-                    totalWorkDays += 1;
-                    totalEarnings += getDayAmount(dayData);
-                }
-
-                const isToday = dateKey === todayStr;
-                const cell = document.createElement('div');
-                cell.className = `bg-white p-0.5 flex flex-col justify-between cursor-pointer hover:bg-indigo-50/40 transition-colors border-t border-l border-slate-150 overflow-hidden relative ${isToday ? 'bg-indigo-50/30' : ''}`;
-                cell.onclick = () => openModal(dateKey);
-
-                let numColor = 'text-slate-700';
-                if (dayOfWeek === 0 || holidayName) numColor = 'text-red-500 font-semibold';
-                if (dayOfWeek === 6) numColor = 'text-blue-500 font-semibold';
-
-                let numStyleClass = isToday ? `text-[10.5px] font-black text-indigo-700 underline decoration-2 underline-offset-1` : `text-[10px] ${numColor}`;
-
-                let badgeHtml = '';
-                if (dayData.tripType) {
-                    const amt = getDayAmount(dayData);
-                    const amtInThousand = formatAmountInThousand(amt);
-                    const labelStr = dayData.tripType.replace('관내', '근내').replace('관외', '근외');
-                    const govCarTag = dayData.isGovCar ? '<span class="text-amber-600 font-extrabold">[관]</span>' : '';
-                    let badgeStyle = labelStr === '근외' ? 'bg-blue-100 text-blue-900 border-blue-300' : (labelStr === '상시' ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : 'bg-indigo-100 text-indigo-900 border-indigo-200');
-
-                    badgeHtml = `<span class="${badgeStyle} text-[7px] font-bold px-0.5 py-0 rounded tracking-tighter whitespace-nowrap border leading-none inline-flex items-center justify-center">${govCarTag}${labelStr}${amtInThousand}</span>`;
-                }
-
-                let holidayHtml = holidayName ? `<span class="text-[7.5px] text-red-500 font-bold ml-1">${holidayName}</span>` : '';
-                let dayHeaderHtml = `<div class="flex items-center justify-between mb-0.5 w-full overflow-hidden shrink-0"><div class="flex items-center truncate"><span class="${numStyleClass}">${day}</span>${holidayHtml}</div>${badgeHtml}</div>`;
-                
-                let contentListHtml = `<div class="flex-1 w-full overflow-hidden text-[7.5px] space-y-0.5">`;
-
-                if (dayData.todos && dayData.todos.length > 0) {
-                    const maxDisplay = 3;
-                    const displayTodos = dayData.todos.slice(0, maxDisplay);
-                    displayTodos.forEach(t => {
-                        contentListHtml += `<div class="truncate ${t.done ? 'line-through text-slate-400' : 'text-slate-700 font-medium'} flex items-center gap-0.5 leading-tight"><span class="text-[5.5px] shrink-0">${t.done ? '✔' : '☐'}</span><span class="truncate">${t.text}</span></div>`;
-                    });
-                    if (dayData.todos.length > maxDisplay) {
-                        const extraCount = dayData.todos.length - maxDisplay;
-                        contentListHtml += `<div class="text-[6.5px] text-indigo-600 font-bold leading-tight pl-1">외 ${extraCount}건 더...</div>`;
-                    }
-                }
-                
-                if (dayData.memo) {
-                    contentListHtml += `<div class="truncate text-slate-500 italic text-[6.5px] flex items-center gap-0.5 leading-tight"><i class="fa-regular fa-sticky-note text-[5.5px] text-amber-500"></i><span class="truncate">${dayData.memo.split('\n')[0]}</span></div>`;
-                }
-
-                if (dayData.drawing || (dayData.drawings && dayData.drawings.some(d => d))) {
-                    contentListHtml += `<div class="text-[6.5px] text-indigo-600 font-bold flex items-center gap-0.5 leading-tight"><i class="fa-solid fa-pen-nib text-[5.5px]"></i> <span>손메모</span></div>`;
-                }
-                contentListHtml += `</div>`;
-
-                let bottomAreaHtml = `<div class="w-full mt-auto pt-0.5 shrink-0 flex flex-col items-center gap-0.5">`;
-                
-                if (dayData.leaveType) {
-                    const typeLabel = dayData.vacationTitle || dayData.leaveType;
-                    const totalMins = dayData.leaveTotalMinutes !== undefined ? dayData.leaveTotalMinutes : ((dayData.leaveHours || 8) * 60);
-                    const hText = Math.floor(totalMins / 60);
-                    const mText = totalMins % 60;
-                    const timeStr = `${hText}:${String(mText).padStart(2, '0')}`;
-                    const bgClass = dayData.leaveType === '연차' ? 'bg-blue-500' : 'bg-amber-500';
-                    bottomAreaHtml += `<div class="${bgClass} text-white font-bold text-[6.5px] py-0.5 px-1 rounded truncate flex items-center justify-center shadow-sm tracking-tighter w-full"><span class="truncate">${typeLabel}(${timeStr})</span></div>`;
-                }
-
-                if (showWorkTimeOnCalendar) {
-                    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
-                        if (dayData.workStartTime && dayData.workEndTime) {
-                            const dur = calculateWorkDuration(dayData.workStartTime, dayData.workEndTime, dayData.lunchHours);
-                            if (dur) {
-                                bottomAreaHtml += `<div class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[7px] font-bold py-0.5 px-1 rounded text-center w-full truncate tracking-tighter">근무(${dur.formatted})</div>`;
-                            }
-                        }
-                    } else if (dayOfWeek === 6) {
-                        const weeklyMins = weeklyTotals[dateKey];
-                        if (weeklyMins && weeklyMins > 0) {
-                            const wH = Math.floor(weeklyMins / 60);
-                            const wM = weeklyMins % 60;
-                            const weeklyFormatted = `${wH}:${String(wM).padStart(2, '0')}`;
-                            bottomAreaHtml += `<div class="bg-indigo-100 text-indigo-800 border border-indigo-300 text-[7px] font-extrabold py-0.5 px-1 rounded text-center w-full truncate tracking-tighter">${weeklyFormatted}</div>`;
-                        }
-                    }
-                }
-
-                bottomAreaHtml += `</div>`;
-
-                cell.innerHTML = dayHeaderHtml + contentListHtml + bottomAreaHtml;
-                grid.appendChild(cell);
-            }
-
-            for (let nextDay = 1; nextDay <= remainingCells; nextDay++) {
-                const nDateKey = formatDateKey(nYear, nMonth, nextDay);
-                const nDayObj = new Date(nYear, nMonth, nextDay);
-                const nDayOfWeek = nDayObj.getDay();
-                const dayData = appData[nDateKey] || {};
-
-                const cell = document.createElement('div');
-                cell.className = 'bg-slate-100/90 p-0.5 text-slate-600 text-[10px] overflow-hidden flex flex-col justify-between border-t border-l border-slate-200 cursor-pointer hover:bg-indigo-50/50 transition-colors relative';
-                cell.onclick = () => openModal(nDateKey);
-
-                let badgeHtml = '';
-                if (dayData.tripType) {
-                    const amt = getDayAmount(dayData);
-                    const amtInThousand = formatAmountInThousand(amt);
-                    const labelStr = dayData.tripType.replace('관내', '근내').replace('관외', '근외');
-                    const govCarTag = dayData.isGovCar ? '<span class="text-amber-600 font-extrabold">[관]</span>' : '';
-                    let badgeStyle = labelStr === '근외' ? 'bg-blue-100 text-blue-900 border-blue-300' : (labelStr === '상시' ? 'bg-emerald-100 text-emerald-900 border-emerald-300' : 'bg-indigo-100 text-indigo-900 border-indigo-200');
-
-                    badgeHtml = `<span class="${badgeStyle} text-[7px] font-bold px-0.5 py-0 rounded tracking-tighter whitespace-nowrap border leading-none inline-flex items-center justify-center">${govCarTag}${labelStr}${amtInThousand}</span>`;
-                }
-
-                let headerHtml = `<div class="flex items-center justify-between mb-0.5 w-full overflow-hidden shrink-0"><span class="text-[10px] font-bold text-slate-500">${nextDay}</span>${badgeHtml}</div>`;
-                
-                let contentHtml = `<div class="flex-1 w-full overflow-hidden text-[7.5px] space-y-0.5">`;
-                if (dayData.todos && dayData.todos.length > 0) {
-                    const maxDisplay = 3;
-                    const displayTodos = dayData.todos.slice(0, maxDisplay);
-                    displayTodos.forEach(t => {
-                        contentHtml += `<div class="truncate ${t.done ? 'line-through text-slate-400' : 'text-slate-700 font-medium'} flex items-center gap-0.5 leading-tight"><span class="text-[5.5px] shrink-0">${t.done ? '✔' : '☐'}</span><span class="truncate">${t.text}</span></div>`;
-                    });
-                    if (dayData.todos.length > maxDisplay) {
-                        const extraCount = dayData.todos.length - maxDisplay;
-                        contentHtml += `<div class="text-[6.5px] text-indigo-600 font-bold leading-tight pl-1">외 ${extraCount}건 더...</div>`;
-                    }
-                }
-
-                if (dayData.memo) {
-                    contentHtml += `<div class="truncate text-slate-500 italic text-[6.5px] flex items-center gap-0.5 leading-tight"><i class="fa-regular fa-sticky-note text-[5.5px] text-amber-500"></i><span class="truncate">${dayData.memo.split('\n')[0]}</span></div>`;
-                }
-                contentHtml += `</div>`;
-
-                let bottomAreaHtml = `<div class="w-full mt-auto pt-0.5 shrink-0 flex flex-col items-center gap-0.5">`;
-                if (dayData.leaveType) {
-                    const typeLabel = dayData.vacationTitle || dayData.leaveType;
-                    const totalMins = dayData.leaveTotalMinutes !== undefined ? dayData.leaveTotalMinutes : ((dayData.leaveHours || 8) * 60);
-                    const hText = Math.floor(totalMins / 60);
-                    const mText = totalMins % 60;
-                    const timeStr = `${hText}:${String(mText).padStart(2, '0')}`;
-                    const bgClass = dayData.leaveType === '연차' ? 'bg-blue-500' : 'bg-amber-500';
-                    bottomAreaHtml += `<div class="${bgClass} text-white font-bold text-[6.5px] py-0.5 px-1 rounded truncate flex items-center justify-center shadow-sm tracking-tighter w-full"><span class="truncate">${typeLabel}(${timeStr})</span></div>`;
-                }
-                if (showWorkTimeOnCalendar) {
-                    if (nDayOfWeek >= 1 && nDayOfWeek <= 5) {
-                        if (dayData.workStartTime && dayData.workEndTime) {
-                            const dur = calculateWorkDuration(dayData.workStartTime, dayData.workEndTime, dayData.lunchHours);
-                            if (dur) {
-                                bottomAreaHtml += `<div class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[7px] font-bold py-0.5 px-1 rounded text-center w-full truncate tracking-tighter">근무(${dur.formatted})</div>`;
-                            }
-                        }
-                    } else if (nDayOfWeek === 6) {
-                        const weeklyMins = weeklyTotals[nDateKey];
-                        if (weeklyMins && weeklyMins > 0) {
-                            const wH = Math.floor(weeklyMins / 60);
-                            const wM = weeklyMins % 60;
-                            const weeklyFormatted = `${wH}:${String(wM).padStart(2, '0')}`;
-                            bottomAreaHtml += `<div class="bg-indigo-100 text-indigo-800 border border-indigo-300 text-[7px] font-extrabold py-0.5 px-1 rounded text-center w-full truncate tracking-tighter">${weeklyFormatted}</div>`;
-                        }
-                    }
-                }
-                bottomAreaHtml += `</div>`;
-
-                cell.innerHTML = headerHtml + contentHtml + bottomAreaHtml;
-                grid.appendChild(cell);
-            }
-
-            document.getElementById('statWorkDays').innerText = `${totalWorkDays} 일`;
-            document.getElementById('statEarnings').innerText = totalEarnings.toLocaleString() + ' 원';
-
-            const totalAnnualMins = annualTotalDays * 8 * 60;
-            const remainLeaveMins = Math.max(0, totalAnnualMins - getUsedLeaveMinutes());
-            const remainRewardMins = Math.max(0, (getTotalEarnedRewardHours() * 60) - getUsedRewardMinutes());
-            
-            const rH = Math.floor(remainRewardMins / 60);
-            const rM = remainRewardMins % 60;
-            const rewardStr = rM > 0 ? `${rH}h${rM}m` : `${rH}h`;
-
-            document.getElementById('statRemainingLeave').innerText = `${formatLeaveDisplay(remainLeaveMins)} / 보${rewardStr}`;
-        }
-
-        function checkAndShowAutoAlert() {
-            const hideUntil = localStorage.getItem('work_note_hide_alert_until');
-            const now = new Date().getTime();
-            if (hideUntil && now < parseInt(hideUntil)) return;
-            openTodayAlertModal();
-        }
-
-        function openTodayAlertModal() {
-            const today = new Date();
-            const todayKey = formatDateKey(today.getFullYear(), today.getMonth(), today.getDate());
-            const dayData = appData[todayKey];
-            const contentEl = document.getElementById('todayAlertContent');
-
-            let html = `<p class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-calendar-day mr-1"></i>오늘 (${todayKey})</p>`;
-            if (!dayData || (!dayData.tripType && !dayData.leaveType && (!dayData.todos || dayData.todos.length === 0) && !dayData.memo)) {
-                html += `<p class="text-slate-500">오늘 등록된 특별한 일정이나 할 일이 없습니다.</p>`;
-            } else {
-                if (dayData.tripType) html += `<p>• 출장: <strong class="text-indigo-700">${dayData.tripType}</strong></p>`;
-                if (dayData.todos && dayData.todos.length > 0) {
-                    html += `<p class="font-bold mt-1">• 할 일:</p><ul class="pl-3 list-disc">`;
-                    dayData.todos.forEach(t => html += `<li class="${t.done ? 'line-through text-slate-400' : 'text-slate-700'}">${t.text}</li>`);
-                    html += `</ul>`;
-                }
-            }
-            if (contentEl) contentEl.innerHTML = html;
-            const modal = document.getElementById('todayAlertModal');
-            if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); }
-        }
-
-        function closeTodayAlertModal() {
-            const dontShowCheck = document.getElementById('dontShowTodayCheck');
-            if (dontShowCheck && dontShowCheck.checked) {
-                localStorage.setItem('work_note_hide_alert_until', new Date().getTime() + (24 * 60 * 60 * 1000));
-            }
-            const modal = document.getElementById('todayAlertModal');
-            if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
-        }
-
-        let touchStartX = 0, touchEndX = 0;
-        const calendarGridEl = document.getElementById('calendarGrid');
-        if (calendarGridEl) {
-            calendarGridEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-            calendarGridEl.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                if (touchEndX < touchStartX - 50) changeMonth(1);
-                else if (touchEndX > touchStartX + 50) changeMonth(-1);
-            }, { passive: true });
-        }
-
-        function openAnnualLeaveModal() {
-            document.getElementById('annualTotalDaysInput').value = annualTotalDays;
-            updateAnnualLeaveModalInfo(); renderRewardItemsList();
-            document.getElementById('annualLeaveModal').classList.remove('hidden'); document.getElementById('annualLeaveModal').classList.add('flex');
-        }
-        function closeAnnualLeaveModal() { document.getElementById('annualLeaveModal').classList.add('hidden'); document.getElementById('annualLeaveModal').classList.remove('flex'); }
-        
-        function updateAnnualLeaveModalInfo() {
-            const totalMins = (parseFloat(document.getElementById('annualTotalDaysInput').value) || 0) * 8 * 60;
-            const usedMins = getUsedLeaveMinutes();
-            const remainMins = Math.max(0, totalMins - usedMins);
-            document.getElementById('modalUsedLeave').innerText = `${(usedMins/(8*60)).toFixed(1)}일 (${Math.floor(usedMins/60)}시간)`;
-            document.getElementById('modalRemainLeave').innerText = formatLeaveDisplay(remainMins);
-
-            const totalEarnedH = getTotalEarnedRewardHours();
-            const usedRewardMins = getUsedRewardMinutes();
-            document.getElementById('modalTotalReward').innerText = `${totalEarnedH}시간`;
-            document.getElementById('modalUsedReward').innerText = `${(usedRewardMins/60).toFixed(1)}시간`;
-            document.getElementById('modalRemainReward').innerText = `${((totalEarnedH*60 - usedRewardMins)/60).toFixed(1)}시간`;
-        }
-
-        function addRewardItem() {
-            const h = parseFloat(document.getElementById('rewardAddHoursInput').value);
-            const desc = document.getElementById('rewardAddDescInput').value.trim() || '보상 적립';
-            if (!isNaN(h) && h > 0) {
-                rewardItems.push({ id: Date.now(), date: new Date().toISOString().slice(0, 10), hours: h, desc });
-                document.getElementById('rewardAddHoursInput').value = ''; document.getElementById('rewardAddDescInput').value = '';
-                saveData(); updateAnnualLeaveModalInfo(); renderRewardItemsList();
-            } else { alert('올바른 시간을 입력해 주세요.'); }
-        }
-        function removeRewardItem(id) {
-            rewardItems = rewardItems.filter(i => i.id !== id);
-            saveData(); updateAnnualLeaveModalInfo(); renderRewardItemsList();
-        }
-        function renderRewardItemsList() {
-            const container = document.getElementById('rewardListContainer');
-            container.innerHTML = rewardItems.length === 0 ? `<div class="text-slate-400 text-center py-1 text-[10px]">적립 내역이 없습니다.</div>` : '';
-            rewardItems.forEach(item => {
-                const row = document.createElement('div');
-                row.className = 'flex justify-between items-center bg-white p-1.5 rounded border text-[11px] mb-1';
-                row.innerHTML = `<div><span class="font-bold text-amber-900">${item.hours}시간</span><span class="text-slate-500 ml-1">(${item.desc})</span></div><button onclick="removeRewardItem(${item.id})" class="text-red-500 font-bold px-1.5 py-0.5 bg-red-50 rounded">삭제</button>`;
-                container.appendChild(row);
-            });
-        }
-        function saveAnnualLeaveSetting() {
-            const val = parseFloat(document.getElementById('annualTotalDaysInput').value);
-            if (!isNaN(val) && val >= 0) { annualTotalDays = val; saveData(); closeAnnualLeaveModal(); }
-            else { alert('올바른 연차 일수를 입력해 주세요.'); }
-        }
-
-        function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
-        function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
-        
-        function exportJsonFileViaConverter() {
-            const dataStr = JSON.stringify({ appData, annualTotalDays, rewardItems });
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(dataStr);
-            } else {
-                const textarea = document.getElementById('backupTextArea');
-                textarea.value = dataStr;
-                textarea.select();
-            }
-            
-            const backupConverterUrl = "https://window-ho.github.io/ind/backup.html"; 
-            if (/android/i.test(navigator.userAgent)) {
-                const intentUrl = `intent://window-ho.github.io/ind/backup.html#Intent;scheme=https;package=com.android.chrome;end;`;
-                window.location.href = intentUrl;
-            } else {
-                window.open(backupConverterUrl, '_system');
-            }
-        }
-
-        function importJsonFile(event) {
-            const fileReader = new FileReader();
-            if (event.target.files[0]) {
-                fileReader.readAsText(event.target.files[0], "UTF-8");
-                fileReader.onload = (e) => {
-                    try {
-                        const parsed = JSON.parse(e.target.result);
-                        if (confirm('JSON 파일에서 데이터를 불러와 복원하시겠습니까?')) {
-                            appData = migrateLegacyData(parsed.appData || parsed);
-                            annualTotalDays = parsed.annualTotalDays || 15.0;
-                            rewardItems = parsed.rewardItems || [];
-                            saveData(); closeBackupModal(); alert('복원 완료!');
-                        }
-                    } catch(err) { alert('파일 오류'); }
-                };
-            }
-        }
-
-        function copyBackupCode() {
-            const dataStr = JSON.stringify({ appData, annualTotalDays, rewardItems });
-            const backupTextArea = document.getElementById('backupTextArea');
-            backupTextArea.value = dataStr;
-            if (navigator.clipboard) { navigator.clipboard.writeText(dataStr).then(() => alert('복사되었습니다!')); }
-            else { backupTextArea.select(); alert('복사해 주세요.'); }
-        }
-
-        function restoreBackupCode() {
-            const raw = document.getElementById('backupTextArea').value.trim();
-            if (!raw) return alert('코드가 없습니다.');
-            try {
-                const parsed = JSON.parse(raw);
-                if (confirm('복원하시겠습니까?')) {
-                    appData = migrateLegacyData(parsed.appData || parsed);
-                    annualTotalDays = parsed.annualTotalDays || 15.0;
-                    rewardItems = parsed.rewardItems || [];
-                    saveData(); closeBackupModal(); alert('복원 완료!');
-                }
-            } catch(e) { alert('잘못된 코드입니다.'); }
-        }
-
-        function openHelpModal() { document.getElementById('helpModal').classList.remove('hidden'); document.getElementById('helpModal').classList.add('flex'); }
-        function closeHelpModal() { document.getElementById('helpModal').classList.add('hidden'); document.getElementById('helpModal').classList.remove('flex'); }
-
-        function openUpdateLogModal() {
-            document.getElementById('updateLogModal').classList.remove('hidden');
-            document.getElementById('updateLogModal').classList.add('flex');
-        }
-        function closeUpdateLogModal() {
-            document.getElementById('updateLogModal').classList.add('hidden');
-            document.getElementById('updateLogModal').classList.remove('flex');
-        }
-
-        function openRateModal() {
-            document.getElementById('showWorkTimeCheck').checked = showWorkTimeOnCalendar;
-            document.getElementById('rate_근내').value = customRates['근내'] !== undefined ? customRates['근내'] : 20000;
-            document.getElementById('rate_근외').value = customRates['근외'] !== undefined ? customRates['근외'] : 50000;
-            [1, 2, 3].forEach(g => {
-                document.getElementById(`rate_상시_${g}`).value = customRates[`상시_${g}`] !== undefined ? customRates[`상시_${g}`] : (g === 1 ? 12000 : (g === 3 ? 25000 : 16000));
-                document.getElementById(`rate_동행_${g}`).value = customRates[`동행_${g}`] !== undefined ? customRates[`동행_${g}`] : (g === 1 ? 12000 : (g === 3 ? 25000 : 16000));
-            });
-            document.getElementById('rateModal').classList.remove('hidden'); document.getElementById('rateModal').classList.add('flex');
-        }
-        function closeRateModal() { document.getElementById('rateModal').classList.add('hidden'); document.getElementById('rateModal').classList.remove('flex'); }
-        function saveRates() {
-            showWorkTimeOnCalendar = document.getElementById('showWorkTimeCheck').checked;
-            const v1 = document.getElementById('rate_근내').value; if(v1 !== '') customRates['근내'] = parseInt(v1);
-            const v2 = document.getElementById('rate_근외').value; if(v2 !== '') customRates['근외'] = parseInt(v2);
-            [1, 2, 3].forEach(g => {
-                const sVal = document.getElementById(`rate_상시_${g}`).value; if(sVal !== '') customRates[`상시_${g}`] = parseInt(sVal);
-                const dVal = document.getElementById(`rate_동행_${g}`).value; if(dVal !== '') customRates[`동행_${g}`] = parseInt(dVal);
-            });
-            localStorage.setItem('work_note_rates', JSON.stringify(customRates));
-            saveData();
-            closeRateModal(); renderCalendar();
-        }
-
-        let currentModalTodos = [];
-        function openModal(dateKey) {
-            selectedDateStr = dateKey;
-            document.getElementById('modalDateStr').innerText = dateKey;
-            let dayData = appData[dateKey] || {};
-            
-            document.getElementById('workStartTimeInput').value = dayData.workStartTime !== undefined ? dayData.workStartTime : '09:00';
-            document.getElementById('workEndTimeInput').value = dayData.workEndTime !== undefined ? dayData.workEndTime : '18:00';
-            document.getElementById('lunchHourSelect').value = dayData.lunchHours !== undefined ? dayData.lunchHours : 1;
-
-            document.getElementById('tripTypeInput').value = dayData.tripType || '';
-            document.getElementById('isGovCarCheckbox').checked = !!dayData.isGovCar;
-            document.getElementById('customAmountInput').value = dayData.customAmount !== undefined ? dayData.customAmount : '';
-            document.getElementById('memoInput').value = dayData.memo || '';
-            
-            document.getElementById('vacationTitleInput').value = dayData.vacationTitle || (dayData.leaveType === '보상' ? '보상' : '연차');
-            document.getElementById('vacationEndDateInput').value = dateKey;
-
-            selectedGradeNum = dayData.grade !== undefined ? dayData.grade : 2;
-
-            const totalMins = dayData.leaveTotalMinutes !== undefined ? dayData.leaveTotalMinutes : ((dayData.leaveHours !== undefined ? dayData.leaveHours : 8) * 60);
-            document.getElementById('leaveHourInput').value = Math.floor(totalMins / 60);
-            document.getElementById('leaveMinuteSelect').value = totalMins % 60;
-
-            setActiveTripTypeButton(dayData.tripType);
-            setActiveLeaveTypeButton(dayData.leaveType);
-            updateGradeSelectorVisibility(dayData.tripType);
-
-            tempDrawingData = (dayData.drawings && dayData.drawings[0]) || dayData.drawing || "";
-            updateDrawingPreview();
-
-            currentModalTodos = dayData.todos ? [...dayData.todos] : [];
-            renderTodoList();
-
-            document.getElementById('dayModal').classList.remove('hidden'); document.getElementById('dayModal').classList.add('flex');
-        }
-
-        function clearWorkTimes() {
-            document.getElementById('workStartTimeInput').value = '';
-            document.getElementById('workEndTimeInput').value = '';
-        }
-
-        function setActiveTripTypeButton(type) {
-            document.querySelectorAll('.trip-btn').forEach(btn => {
-                if (btn.innerText === type) btn.className = "trip-btn py-1.5 bg-indigo-600 text-white font-bold rounded text-[11px] shadow-sm";
-                else btn.className = "trip-btn py-1.5 bg-white hover:bg-indigo-100 text-indigo-700 font-bold rounded text-[11px] border border-indigo-200";
-            });
-        }
-
-        function updateGradeSelectorVisibility(type) {
-            const box = document.getElementById('gradeSelectorBox');
-            if (type === '상시' || type === '동행') {
-                box.classList.remove('hidden'); box.classList.add('grid');
-                setActiveGradeButton(selectedGradeNum);
-            } else {
-                box.classList.add('hidden'); box.classList.remove('grid');
-            }
-        }
-
-        function setActiveGradeButton(grade) {
-            [1, 2, 3].forEach(g => {
-                const btn = document.getElementById(`btnGrade${g}`);
-                if (g === grade) btn.className = "py-1.5 bg-indigo-600 text-white font-bold rounded text-[11px] shadow-sm";
-                else btn.className = "py-1.5 bg-white text-slate-700 font-bold rounded text-[11px] border border-slate-300";
-            });
-        }
-
-        function selectGrade(grade) {
-            selectedGradeNum = grade;
-            setActiveGradeButton(grade);
-            autoCalculateAmount();
-        }
-
-        function setActiveLeaveTypeButton(type) {
-            const btnA = document.getElementById('btnLeave연차');
-            const btnB = document.getElementById('btnLeave보상');
-            const leaveTimeBox = document.getElementById('leaveTimeBox');
-            const annualExtraContainer = document.getElementById('annualExtraContainer');
-
-            if (type === '연차') {
-                btnA.className = "py-1.5 bg-blue-600 text-white font-bold rounded text-[11px] shadow-sm";
-                btnB.className = "py-1.5 bg-white hover:bg-blue-100 text-amber-700 font-bold rounded text-[11px] border border-amber-200";
-                leaveTimeBox.classList.remove('hidden'); annualExtraContainer.classList.remove('hidden');
-            } else if (type === '보상') {
-                btnA.className = "py-1.5 bg-white hover:bg-blue-100 text-blue-700 font-bold rounded text-[11px] border border-amber-200";
-                btnB.className = "py-1.5 bg-amber-600 text-white font-bold rounded text-[11px] shadow-sm";
-                leaveTimeBox.classList.remove('hidden'); annualExtraContainer.classList.add('hidden');
-            } else {
-                btnA.className = "py-1.5 bg-white hover:bg-blue-100 text-blue-700 font-bold rounded text-[11px] border border-amber-200";
-                btnB.className = "py-1.5 bg-white hover:bg-blue-100 text-amber-700 font-bold rounded text-[11px] border border-amber-200";
-                leaveTimeBox.classList.add('hidden');
-            }
-        }
-
-        function selectTripType(type) {
-            const el = document.getElementById('tripTypeInput');
-            if (el.value === type) { 
-                el.value = ''; 
-                setActiveTripTypeButton(''); 
-                updateGradeSelectorVisibility(''); 
-                document.getElementById('customAmountInput').value = '';
-            } else { 
-                el.value = type; 
-                setActiveTripTypeButton(type); 
-                updateGradeSelectorVisibility(type); 
-                autoCalculateAmount();
-            }
-        }
-
-        function autoCalculateAmount() {
-            const type = document.getElementById('tripTypeInput').value;
-            if (!type) return;
-            const isGov = document.getElementById('isGovCarCheckbox').checked;
-            let base = 16000;
-            if (type === '근내') base = customRates['근내'] !== undefined ? customRates['근내'] : 20000;
-            else if (type === '근외') base = customRates['근외'] !== undefined ? customRates['근외'] : 50000;
-            else if (type === '상시' || type === '동행') {
-                const key = `${type}_${selectedGradeNum}`;
-                base = customRates[key] !== undefined ? customRates[key] : (selectedGradeNum === 1 ? 12000 : (selectedGradeNum === 3 ? 25000 : 16000));
-            }
-            const finalAmt = isGov ? base * 0.5 : base;
-            document.getElementById('customAmountInput').value = finalAmt;
-        }
-
-        function selectLeaveType(type) {
-            const btnA = document.getElementById('btnLeave연차');
-            const btnB = document.getElementById('btnLeave보상');
-            const currentActive = (btnA.classList.contains('bg-blue-600') ? '연차' : (btnB.classList.contains('bg-amber-600') ? '보상' : ''));
-            if (currentActive === type) setActiveLeaveTypeButton('');
-            else {
-                setActiveLeaveTypeButton(type);
-                document.getElementById('vacationTitleInput').value = type === '보상' ? '보상' : '연차';
-            }
-        }
-
-        function closeModal() { document.getElementById('dayModal').classList.add('hidden'); document.getElementById('dayModal').classList.remove('flex'); }
-        function onGovCarChange() { autoCalculateAmount(); }
-
-        function renderTodoList() {
-            const listEl = document.getElementById('todoList');
-            listEl.innerHTML = '';
-            currentModalTodos.forEach((todo, idx) => {
-                const li = document.createElement('li');
-                li.className = 'flex items-center justify-between bg-slate-50 p-1.5 rounded text-xs border';
-                li.innerHTML = `
-                    <div class="flex items-center gap-2 flex-1 overflow-hidden">
-                        <input type="checkbox" ${todo.done ? 'checked' : ''} onchange="toggleTodo(${idx})">
-                        <span id="todoTextSpan_${idx}" class="${todo.done ? 'line-through text-slate-400' : ''} truncate">${todo.text}</span>
-                    </div>
-                    <div class="flex items-center gap-1 shrink-0">
-                        <button onclick="moveTodo(${idx}, -1)" class="text-slate-600 hover:text-indigo-700 px-1 py-0.5 bg-slate-200 rounded text-[10px]" title="위로"><i class="fa-solid fa-arrow-up"></i></button>
-                        <button onclick="moveTodo(${idx}, 1)" class="text-slate-600 hover:text-indigo-700 px-1 py-0.5 bg-slate-200 rounded text-[10px]" title="아래로"><i class="fa-solid fa-arrow-down"></i></button>
-                        <button onclick="openEditTodoModal(${idx})" class="text-indigo-600 hover:text-indigo-800 font-bold px-1 py-0.5 bg-indigo-50 rounded text-[10px]">수정/이동</button>
-                        <button onclick="removeTodo(${idx})" class="text-slate-400 hover:text-red-500 px-1 py-0.5"><i class="fa-solid fa-xmark"></i></button>
-                    </div>`;
-                listEl.appendChild(li);
-            });
-        }
-
-        function addTodo() {
-            const input = document.getElementById('todoInput');
-            if (input.value.trim()) { 
-                currentModalTodos.push({ text: input.value.trim(), done: false }); 
-                input.value = ''; 
-                renderTodoList(); 
-            }
-        }
-
-        function toggleTodo(idx) { 
-            currentModalTodos[idx].done = !currentModalTodos[idx].done; 
-            renderTodoList(); 
-        }
-        
-        function moveTodo(idx, direction) {
-            const newIdx = idx + direction;
-            if (newIdx < 0 || newIdx >= currentModalTodos.length) return;
-            const temp = currentModalTodos[idx];
-            currentModalTodos[idx] = currentModalTodos[newIdx];
-            currentModalTodos[newIdx] = temp;
-            renderTodoList();
-        }
-
-        let editingTodoIndex = null;
-        function openEditTodoModal(idx) {
-            editingTodoIndex = idx;
-            document.getElementById('editTodoInputModal').value = currentModalTodos[idx].text;
-            document.getElementById('targetDateInputModal').value = selectedDateStr;
-            const modal = document.getElementById('editTodoModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => document.getElementById('editTodoInputModal').focus(), 100);
-        }
-
-        function closeEditTodoModal() {
-            const modal = document.getElementById('editTodoModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            editingTodoIndex = null;
-        }
-
-        function confirmEditTodo() {
-            const newText = document.getElementById('editTodoInputModal').value.trim();
-            if (newText !== "" && editingTodoIndex !== null) {
-                currentModalTodos[editingTodoIndex].text = newText;
-                renderTodoList();
-            }
-            closeEditTodoModal();
-        }
-
-        function moveOrCopyTodo(actionType) {
-            const newText = document.getElementById('editTodoInputModal').value.trim();
-            const targetDate = document.getElementById('targetDateInputModal').value;
-            if (!newText || editingTodoIndex === null || !targetDate) {
-                alert('내용과 목표 날짜를 확인해 주세요.');
-                return;
-            }
-
-            currentModalTodos[editingTodoIndex].text = newText;
-            const targetTodoItem = { ...currentModalTodos[editingTodoIndex] };
-
-            if (actionType === 'move') {
-                if (targetDate === selectedDateStr) {
-                    renderTodoList();
-                    closeEditTodoModal();
-                    return;
-                }
-                currentModalTodos.splice(editingTodoIndex, 1);
-                renderTodoList();
-
-                if (!appData[targetDate]) appData[targetDate] = { todos: [] };
-                if (!appData[targetDate].todos) appData[targetDate].todos = [];
-                appData[targetDate].todos.push(targetTodoItem);
-                saveData();
-                alert(`${targetDate}로 일정이 이동되었습니다.`);
-            } else if (actionType === 'copy') {
-                if (!appData[targetDate]) appData[targetDate] = { todos: [] };
-                if (!appData[targetDate].todos) appData[targetDate].todos = [];
-                appData[targetDate].todos.push(targetTodoItem);
-                saveData();
-                alert(`${targetDate}에 일정이 복사되었습니다.`);
-            }
-            closeEditTodoModal();
-        }
-
-        function removeTodo(idx) { 
-            currentModalTodos.splice(idx, 1); 
-            renderTodoList(); 
-        }
-
-        function updateDrawingPreview() {
-            const container = document.getElementById('drawingPreviewContainer');
-            const img = document.getElementById('drawingPreviewImg');
-            if (tempDrawingData) { img.src = tempDrawingData; container.classList.remove('hidden'); }
-            else { img.src = ""; container.classList.add('hidden'); }
-        }
-        function clearDrawing() { tempDrawingData = ""; updateDrawingPreview(); }
-
-        let canvas, ctx, isDrawing = false;
-        function openDrawingModal() {
-            document.getElementById('drawingModal').style.display = 'flex';
-            document.getElementById('drawingModal').classList.remove('hidden');
-            setTimeout(() => {
-                canvas = document.getElementById('signatureCanvas');
-                ctx = canvas.getContext('2d');
-                canvas.width = document.getElementById('canvasWrapper').clientWidth;
-                canvas.height = document.getElementById('canvasWrapper').clientHeight;
-                ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.strokeStyle = '#1e1b4b';
-                if (tempDrawingData) {
-                    const img = new Image();
-                    img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    img.src = tempDrawingData;
-                }
-                initCanvasEvents();
-            }, 100);
-        }
-        function closeDrawingModal() { document.getElementById('drawingModal').style.display = 'none'; document.getElementById('drawingModal').classList.add('hidden'); }
-        function initCanvasEvents() {
-            if (!canvas) return;
-            const getPos = e => ({ x: (e.touches ? e.touches[0].clientX : e.clientX) - canvas.getBoundingClientRect().left, y: (e.touches ? e.touches[0].clientY : e.clientY) - canvas.getBoundingClientRect().top });
-            canvas.onmousedown = e => { isDrawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); };
-            canvas.onmousemove = e => { if (!isDrawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
-            canvas.onmouseup = () => isDrawing = false;
-            canvas.ontouchstart = e => { e.preventDefault(); isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
-            canvas.ontouchmove = e => { if (!isDrawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
-            canvas.ontouchend = () => isDrawing = false;
-        }
-        function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
-        function saveDrawingData() { tempDrawingData = canvas.toDataURL('image/jpeg', 0.6); updateDrawingPreview(); closeDrawingModal(); }
-
-        function saveDayData() {
-            const workStartTime = document.getElementById('workStartTimeInput').value;
-            const workEndTime = document.getElementById('workEndTimeInput').value;
-            const lunchHours = parseFloat(document.getElementById('lunchHourSelect').value);
-
-            const tripType = document.getElementById('tripTypeInput').value.trim();
-            const btnA = document.getElementById('btnLeave연차');
-            const btnB = document.getElementById('btnLeave보상');
-            const leaveType = btnA.classList.contains('bg-blue-600') ? '연차' : (btnB.classList.contains('bg-amber-600') ? '보상' : '');
-
-            const isGovCar = document.getElementById('isGovCarCheckbox').checked;
-            const customAmountVal = document.getElementById('customAmountInput').value;
-            const memo = document.getElementById('memoInput').value.trim();
-            const vacationTitle = document.getElementById('vacationTitleInput').value.trim() || (leaveType === '보상' ? '보상' : '연차');
-
-            const startH = parseInt(document.getElementById('leaveHourInput').value || 0);
-            const startM = parseInt(document.getElementById('leaveMinuteSelect').value || 0);
-            const startTotalMinutes = (startH * 60) + startM;
-
-            let dayData = appData[selectedDateStr] || {};
-            
-            if (workStartTime) dayData.workStartTime = workStartTime; else delete dayData.workStartTime;
-            if (workEndTime) dayData.workEndTime = workEndTime; else delete dayData.workEndTime;
-            dayData.lunchHours = lunchHours;
-
-            dayData.tripType = tripType;
-            dayData.isGovCar = isGovCar;
-            dayData.customAmount = customAmountVal !== '' ? parseFloat(customAmountVal) : '';
-            dayData.grade = selectedGradeNum;
-            dayData.todos = currentModalTodos;
-            dayData.memo = memo;
-            dayData.drawing = tempDrawingData;
-
-            if (leaveType) {
-                dayData.leaveType = leaveType;
-                dayData.vacationTitle = vacationTitle;
-                dayData.leaveHours = startTotalMinutes / 60;
-                dayData.leaveTotalMinutes = startTotalMinutes;
-            } else {
-                delete dayData.leaveType; delete dayData.vacationTitle; delete dayData.leaveHours; delete dayData.leaveTotalMinutes;
-            }
-
-            if (!tripType && !leaveType && (!currentModalTodos || currentModalTodos.length === 0) && !memo && !tempDrawingData && !workStartTime && !workEndTime) {
-                delete appData[selectedDateStr];
-            } else {
-                appData[selectedDateStr] = dayData;
-            }
-
-            saveData(); closeModal();
-        }
-
-        function clearDayData() {
-            if (confirm('이 날짜의 기록을 초기화하시겠습니까?')) {
-                delete appData[selectedDateStr];
-                saveData(); closeModal();
-            }
-        }
-
-        let activeStatsYear = currentDate.getFullYear(), monthlyRawData = {};
-        function openStatsModal() {
-            const sel = document.getElementById('statsYearSelect');
-            sel.innerHTML = '';
-            for (let y = currentDate.getFullYear()-2; y <= currentDate.getFullYear()+2; y++) {
-                const opt = document.createElement('option'); opt.value = y; opt.innerText = `${y}년`;
-                if (y === currentDate.getFullYear()) opt.selected = true;
-                sel.appendChild(opt);
-            }
-            renderStats();
-            showMonthDetail(currentDate.getMonth() + 1);
-            document.getElementById('statsModal').classList.remove('hidden'); document.getElementById('statsModal').classList.add('flex');
-        }
-        function closeStatsModal() { document.getElementById('statsModal').classList.add('hidden'); document.getElementById('statsModal').classList.remove('flex'); }
-
-        function renderStats() {
-            activeStatsYear = parseInt(document.getElementById('statsYearSelect').value);
-            let annualDays = 0, annualAmount = 0, annualTypes = {};
-            monthlyRawData = {};
-            for (let m = 1; m <= 12; m++) monthlyRawData[m] = { days: 0, amount: 0, types: {} };
-
-            Object.keys(appData).forEach(k => {
-                const p = k.split('-');
-                if (parseInt(p[0]) === activeStatsYear) {
-                    const item = appData[k];
-                    if (item && item.tripType) {
-                        const amt = getDayAmount(item), tName = item.tripType.replace('관내','근내').replace('관외','근외');
-                        monthlyRawData[parseInt(p[1])].days++; monthlyRawData[parseInt(p[1])].amount += amt;
-                        annualDays++; annualAmount += amt;
-                        if (!monthlyRawData[parseInt(p[1])].types[tName]) monthlyRawData[parseInt(p[1])].types[tName] = { days: 0, amount: 0 };
-                        monthlyRawData[parseInt(p[1])].types[tName].days++; monthlyRawData[parseInt(p[1])].types[tName].amount += amt;
-                        if (!annualTypes[tName]) annualTypes[tName] = { days: 0, amount: 0 };
-                        annualTypes[tName].days++; annualTypes[tName].amount += amt;
-                    }
-                }
-            });
-
-            document.getElementById('annualDays').innerText = `${annualDays} 일`;
-            document.getElementById('annualAmount').innerText = annualAmount.toLocaleString() + ' 원';
-
-            const annualList = document.getElementById('annualBreakdownList');
-            annualList.innerHTML = Object.keys(annualTypes).length === 0 ? `<div class="text-center text-slate-400 py-2 text-xs">기록 없음</div>` : '';
-            Object.keys(annualTypes).forEach(t => {
-                const i = annualTypes[t];
-                const row = document.createElement('div');
-                row.className = 'grid grid-cols-3 p-2 text-center items-center bg-white';
-                row.innerHTML = `<span class="font-bold text-indigo-800">[${t}]</span><span>${i.amount.toLocaleString()}원</span><span class="text-slate-600 text-[11px]">${Math.round(i.amount/12).toLocaleString()}원 (${(i.days/12).toFixed(1)}일)</span>`;
-                annualList.appendChild(row);
-            });
-
-            const mList = document.getElementById('monthlyStatsList');
-            mList.innerHTML = '';
-            for (let m = 1; m <= 12; m++) {
-                const d = monthlyRawData[m];
-                const row = document.createElement('div');
-                row.className = `grid grid-cols-3 p-2 text-center cursor-pointer hover:bg-indigo-100 ${d.days > 0 ? 'bg-indigo-50/40 font-medium' : 'text-slate-400'}`;
-                row.onclick = () => showMonthDetail(m);
-                row.innerHTML = `<span>${m}월</span><span>${d.days} 일</span><span>${d.amount.toLocaleString()} 원</span>`;
-                mList.appendChild(row);
-            }
-
-            showMonthDetail(currentDate.getMonth() + 1);
-        }
-
-        function showMonthDetail(month) {
-            document.getElementById('detailMonthTitle').innerText = `${activeStatsYear}년 ${month}월 상세`;
-            const list = document.getElementById('detailBreakdownList');
-            list.innerHTML = '';
-            const mD = monthlyRawData[month];
-            if (!mD || mD.days === 0) list.innerHTML = `<div class="text-center text-slate-400 py-2 text-xs">기록 없음</div>`;
-            else {
-                Object.keys(mD.types).forEach(t => {
-                    const info = mD.types[t];
-                    const row = document.createElement('div');
-                    row.className = 'flex justify-between items-center p-1 bg-white rounded border mb-1';
-                    row.innerHTML = `<span class="font-bold text-indigo-800">${t} (${info.days}일)</span><span class="font-semibold">${info.amount.toLocaleString()}원</span>`;
-                    list.appendChild(row);
-                });
-            }
-            document.getElementById('monthDetailBox').classList.remove('hidden');
-        }
-
-        function changeMonth(delta) { currentDate.setMonth(currentDate.getMonth() + delta); renderCalendar(); }
-        function goToToday() { currentDate = new Date(); renderCalendar(); }
-
-        try {
-            renderCalendar();
-        } catch (e) {
-            dismissSplashScreen();
-        }
-    </script>
-</body>
-</html>
+                cell.innerHTML =
